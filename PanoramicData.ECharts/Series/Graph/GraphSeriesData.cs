@@ -4,12 +4,15 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item (node) for the Graph series.</summary>
 public partial class GraphSeriesData
 {
+	/// <summary>Creates an empty graph data item.</summary>
 	public GraphSeriesData()
 	{
 	}
 
+	/// <summary>Creates a graph data item with the specified name and coordinates.</summary>
 	public GraphSeriesData(string name, double x, double y)
 	{
 		Name = name;

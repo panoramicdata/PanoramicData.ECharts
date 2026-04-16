@@ -2,12 +2,15 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item for the Funnel series.</summary>
 public partial class FunnelSeriesData
 {
+	/// <summary>Creates an empty funnel series data item.</summary>
 	public FunnelSeriesData()
 	{
 	}
 
+	/// <summary>Creates a funnel series data item with the specified name and value.</summary>
 	public FunnelSeriesData(string name, double value)
 	{
 		Name = name;

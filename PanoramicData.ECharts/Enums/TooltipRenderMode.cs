@@ -8,6 +8,8 @@ namespace PanoramicData.ECharts;
 [JsonConverter(typeof(CamelCaseEnumConverter<TooltipRenderMode>))]
 public enum TooltipRenderMode
 {
+	/// <summary>Renders the tooltip using HTML elements.</summary>
 	Html,
+	/// <summary>Renders the tooltip using rich text inside the canvas.</summary>
 	RichText
 }

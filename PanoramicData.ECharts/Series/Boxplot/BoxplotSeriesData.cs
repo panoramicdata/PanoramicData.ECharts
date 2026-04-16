@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item for the Boxplot series.</summary>
 public partial class BoxplotSeriesData
 {
 	/// <summary>

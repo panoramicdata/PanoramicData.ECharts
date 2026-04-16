@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item (node) for the Sankey series.</summary>
 public partial class SankeySeriesData
 {
 	/// <summary>

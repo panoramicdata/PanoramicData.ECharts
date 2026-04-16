@@ -10,6 +10,7 @@ namespace PanoramicData.ECharts;
 /// </summary>
 public partial class SliderDataZoom : IDataZoom
 {
+	/// <summary>Gets the data zoom type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "slider";
 

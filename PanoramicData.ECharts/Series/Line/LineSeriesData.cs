@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item for the Line series.</summary>
 public partial class LineSeriesData
 {
 	/// <summary>

@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a category definition for the Graph series.</summary>
 public partial class GraphSeriesCategories
 {
 	/// <summary>

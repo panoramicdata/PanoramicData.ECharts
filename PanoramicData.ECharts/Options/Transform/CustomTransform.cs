@@ -9,6 +9,7 @@ namespace PanoramicData.ECharts;
 /// </summary>
 public class CustomTransform : IDatasetTransform
 {
+	/// <summary>Creates a custom dataset transform with the specified type identifier.</summary>
 	public CustomTransform(string type)
 	{
 		Type = type;

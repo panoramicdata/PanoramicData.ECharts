@@ -4,8 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Configures a funnel chart series for ECharts. See https://echarts.apache.org/en/option.html#series-funnel for full documentation.</summary>
 public partial class FunnelSeries : ISeries
 {
+	/// <summary>Gets the series type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "funnel";
 

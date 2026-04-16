@@ -2,6 +2,7 @@ using AwesomeAssertions;
 
 namespace PanoramicData.ECharts.Test;
 
+/// <summary>Tests for all chart types rendered in the demo application.</summary>
 public class AllChartsTests : TestBase
 {
 	public static TheoryData<string, string, string> AllCharts =>

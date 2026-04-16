@@ -10,6 +10,7 @@ namespace PanoramicData.ECharts;
 /// </summary>
 public partial class SortTransform
 {
+	/// <summary>Gets the dataset transform type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "sort";
 

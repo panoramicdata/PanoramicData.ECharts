@@ -27,6 +27,7 @@ public class BoundaryGap
 		Max = max;
 	}
 
+	/// <summary>Gets the boolean boundary-gap setting, or <c>null</c> when explicit min and max values are used.</summary>
 	public bool? Bool { get; }
 
 	/// <summary>Gets the minimum-side gap value, or <c>null</c> if a boolean value is set.</summary>

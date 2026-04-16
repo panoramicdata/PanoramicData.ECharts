@@ -5,5 +5,6 @@
 /// </summary>
 public interface IDatasetTransform
 {
+	/// <summary>Gets the dataset transform type identifier used by ECharts.</summary>
 	string Type { get; }
 }

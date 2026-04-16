@@ -5,5 +5,6 @@
 /// </summary>
 public interface IDataZoom
 {
+	/// <summary>Gets the data zoom type identifier used by ECharts.</summary>
 	string Type { get; }
 }

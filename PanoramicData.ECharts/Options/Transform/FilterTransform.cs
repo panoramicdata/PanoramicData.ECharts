@@ -10,6 +10,7 @@ namespace PanoramicData.ECharts;
 /// </summary>
 public partial class FilterTransform : IDatasetTransform
 {
+	/// <summary>Gets the dataset transform type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "filter";
 

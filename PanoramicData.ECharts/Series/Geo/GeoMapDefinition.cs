@@ -7,6 +7,7 @@ namespace PanoramicData.ECharts;
 /// </summary>
 public class GeoMapDefinition : IMapDefinition
 {
+	/// <summary>Creates a GeoJSON map definition from a raw JSON string.</summary>
 	public GeoMapDefinition(string name, string geoData, object? specialAreas = null)
 	{
 		Name = name;
@@ -14,6 +15,7 @@ public class GeoMapDefinition : IMapDefinition
 		SpecialAreas = specialAreas;
 	}
 
+	/// <summary>Creates a GeoJSON map definition from a parsed GeoJSON object.</summary>
 	public GeoMapDefinition(string name, object geoData, object? specialAreas = null)
 	{
 		Name = name;
@@ -21,6 +23,7 @@ public class GeoMapDefinition : IMapDefinition
 		SpecialAreas = specialAreas;
 	}
 
+	/// <summary>Creates a GeoJSON map definition from an external data source.</summary>
 	public GeoMapDefinition(string name, ExternalDataSource dataSource, object? specialAreas = null)
 	{
 		Name = name;
@@ -28,6 +31,7 @@ public class GeoMapDefinition : IMapDefinition
 		SpecialAreas = specialAreas;
 	}
 
+	/// <summary>Creates a GeoJSON map definition from an external data source reference.</summary>
 	public GeoMapDefinition(string name, ExternalDataSourceRef dataSource, object? specialAreas = null)
 	{
 		Name = name;
@@ -35,6 +39,7 @@ public class GeoMapDefinition : IMapDefinition
 		SpecialAreas = specialAreas;
 	}
 
+	/// <summary>Gets the registered map definition type identifier.</summary>
 	public string Type => "geoJSON";
 
 	/// <summary>

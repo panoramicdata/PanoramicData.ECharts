@@ -4,12 +4,15 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item for the PictorialBar series.</summary>
 public partial class PictorialBarSeriesData
 {
+	/// <summary>Creates an empty pictorial bar series data item.</summary>
 	public PictorialBarSeriesData()
 	{
 	}
 
+	/// <summary>Creates a pictorial bar series data item with the specified symbol and value.</summary>
 	public PictorialBarSeriesData(string symbol, double value)
 	{
 		Value = value;

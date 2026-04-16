@@ -4,8 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Configures a pie chart series for ECharts. See https://echarts.apache.org/en/option.html#series-pie for full documentation.</summary>
 public partial class PieSeries : ISeries
 {
+	/// <summary>Gets the series type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "pie";
 

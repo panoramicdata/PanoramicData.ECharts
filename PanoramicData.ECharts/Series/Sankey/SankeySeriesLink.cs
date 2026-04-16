@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a link (edge) between nodes in the Sankey series.</summary>
 public partial class SankeySeriesLink
 {
 	/// <summary>

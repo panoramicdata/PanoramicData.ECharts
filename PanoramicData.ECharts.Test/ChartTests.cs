@@ -2,6 +2,7 @@ using AwesomeAssertions;
 
 namespace PanoramicData.ECharts.Test;
 
+/// <summary>Tests for individual chart rendering scenarios.</summary>
 public class ChartTests : TestBase
 {
 	[Fact]

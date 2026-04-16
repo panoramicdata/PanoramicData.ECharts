@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item for the Heatmap series.</summary>
 public partial class HeatmapSeriesData
 {
 	/// <summary>

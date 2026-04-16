@@ -13,9 +13,13 @@ namespace PanoramicData.ECharts;
 [JsonConverter(typeof(TriggerOnConverter))]
 public enum TriggerOn
 {
+	/// <summary>Triggers the tooltip on mouse move.</summary>
 	MouseMove,
+	/// <summary>Triggers the tooltip on click.</summary>
 	Click,
+	/// <summary>Triggers the tooltip on both mouse move and click.</summary>
 	MouseMoveAndClick,
+	/// <summary>Disables automatic tooltip triggering.</summary>
 	None
 }
 

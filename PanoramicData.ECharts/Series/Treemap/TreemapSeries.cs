@@ -4,8 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Configures a treemap chart series for ECharts. See https://echarts.apache.org/en/option.html#series-treemap for full documentation.</summary>
 public partial class TreemapSeries : ISeries
 {
+	/// <summary>Gets the series type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "treemap";
 

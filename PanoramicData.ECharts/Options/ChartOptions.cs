@@ -75,6 +75,7 @@ public partial class ChartOptions
 		set => XAxisObject = value;
 	}
 
+	/// <summary>Gets or sets the raw x-axis configuration as either a single axis or a list of axes.</summary>
 	[JsonPropertyName("xAxis")]
 	public object? XAxisObject { get; set; }
 
@@ -102,6 +103,7 @@ public partial class ChartOptions
 		set => YAxisObject = value;
 	}
 
+	/// <summary>Gets or sets the raw y-axis configuration as either a single axis or a list of axes.</summary>
 	[JsonPropertyName("yAxis")]
 	public object? YAxisObject { get; set; }
 
@@ -370,6 +372,7 @@ public partial class ChartOptions
 	[JsonPropertyName("visualMap")]
 	public object? VisualMapObject { get; set; }
 
+	/// <summary>Gets or sets a single visual map configuration.</summary>
 	[JsonIgnore]
 	public IVisualMap? VisualMap
 	{
@@ -377,6 +380,7 @@ public partial class ChartOptions
 		set => VisualMapObject = value;
 	}
 
+	/// <summary>Gets or sets multiple visual map configurations.</summary>
 	[JsonIgnore]
 	public List<IVisualMap>? VisualMapList
 	{
@@ -1251,6 +1255,7 @@ public partial class ChartOptions
 		set => CalendarObject = value;
 	}
 
+	/// <summary>Gets or sets multiple calendar coordinate configurations.</summary>
 	[JsonIgnore]
 	public List<Calendar>? CalendarList
 	{
@@ -1258,6 +1263,7 @@ public partial class ChartOptions
 		set => CalendarObject = value;
 	}
 
+	/// <summary>Gets or sets the raw calendar configuration as either a single calendar or a list of calendars.</summary>
 	[JsonPropertyName("calendar")]
 	public object? CalendarObject { get; set; }
 
@@ -1306,6 +1312,7 @@ public partial class ChartOptions
 	[JsonPropertyName("aria")]
 	public object? Aria { get; set; }
 
+	/// <summary>Gets or sets the chart series collection.</summary>
 	[JsonPropertyName("series")]
 	[JsonConverter(typeof(PolymorphicListJsonConverter<ISeries>))]
 	public List<ISeries>? Series { get; set; }

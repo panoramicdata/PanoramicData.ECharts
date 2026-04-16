@@ -26,6 +26,8 @@ public class CircleCenter
 	public NumberOrString Vertical { get; }
 }
 
+
+/// <summary>JSON converter for <see cref="CircleCenter"/> that serializes the center as a two-element array.</summary>
 public class CircleCenterConverter : JsonConverter<CircleCenter>
 {
 	/// <inheritdoc/>

@@ -4,8 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Configures a lines chart series for ECharts. See https://echarts.apache.org/en/option.html#series-lines for full documentation.</summary>
 public partial class LinesSeries : ISeries
 {
+	/// <summary>Gets the series type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "lines";
 

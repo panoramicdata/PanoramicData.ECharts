@@ -9,10 +9,12 @@ namespace PanoramicData.ECharts;
 /// </summary>
 public class EmptyCircleStyle
 {
+	/// <summary>Gets or sets the placeholder circle fill color.</summary>
 	[JsonPropertyName("color")]
 	[DefaultValue("lightgray")]
 	public Color? Color { get; set; }
 
+	/// <summary>Gets or sets the placeholder circle border color.</summary>
 	[JsonPropertyName("borderColor")]
 	[DefaultValue("#000")]
 	public Color? BorderColor { get; set; }

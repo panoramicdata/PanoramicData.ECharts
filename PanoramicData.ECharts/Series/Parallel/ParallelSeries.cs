@@ -4,8 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Configures a parallel chart series for ECharts. See https://echarts.apache.org/en/option.html#series-parallel for full documentation.</summary>
 public partial class ParallelSeries : ISeries
 {
+	/// <summary>Gets the series type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "parallel";
 

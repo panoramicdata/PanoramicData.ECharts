@@ -12,8 +12,12 @@ namespace PanoramicData.ECharts;
 [JsonConverter(typeof(CamelCaseEnumConverter<TooltipOrder>))]
 public enum TooltipOrder
 {
+	/// <summary>Orders tooltip entries by series declaration in ascending order.</summary>
 	SeriesAsc,
+	/// <summary>Orders tooltip entries by series declaration in descending order.</summary>
 	SeriesDesc,
+	/// <summary>Orders tooltip entries by value in ascending order.</summary>
 	ValueAsc,
+	/// <summary>Orders tooltip entries by value in descending order.</summary>
 	ValueDesc,
 }

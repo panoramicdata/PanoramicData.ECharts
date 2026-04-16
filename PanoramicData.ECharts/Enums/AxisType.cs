@@ -12,8 +12,12 @@ namespace PanoramicData.ECharts;
 [JsonConverter(typeof(CamelCaseEnumConverter<AxisType>))]
 public enum AxisType
 {
+	/// <summary>Category axis for discrete category data.</summary>
 	Category,
+	/// <summary>Value axis for continuous numeric data.</summary>
 	Value,
+	/// <summary>Time axis for continuous time series data.</summary>
 	Time,
+	/// <summary>Logarithmic axis for log-scaled data.</summary>
 	Log
 }

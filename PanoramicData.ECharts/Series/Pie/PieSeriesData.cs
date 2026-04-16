@@ -4,12 +4,15 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item for the Pie series.</summary>
 public partial class PieSeriesData
 {
+	/// <summary>Creates an empty pie series data item.</summary>
 	public PieSeriesData()
 	{
 	}
 
+	/// <summary>Creates a pie series data item with the specified name and value.</summary>
 	public PieSeriesData(string name, double value)
 	{
 		Name = name;

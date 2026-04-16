@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item for the Candlestick series.</summary>
 public partial class CandlestickSeriesData
 {
 	/// <summary>

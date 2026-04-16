@@ -12,7 +12,10 @@ namespace PanoramicData.ECharts;
 [JsonConverter(typeof(CamelCaseEnumConverter<Overflow>))]
 public enum Overflow
 {
+	/// <summary>Truncates overflowing text and appends an ellipsis.</summary>
 	Truncate,
+	/// <summary>Breaks overflowing text at word boundaries.</summary>
 	Break,
+	/// <summary>Breaks overflowing text at any character.</summary>
 	BreakAll
 }

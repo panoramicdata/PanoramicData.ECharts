@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item for the Tree series.</summary>
 public partial class TreeSeriesData
 {
 	/// <summary>

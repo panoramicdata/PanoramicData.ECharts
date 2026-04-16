@@ -10,6 +10,7 @@ namespace PanoramicData.ECharts;
 /// </summary>
 public partial class ContinuousVisualMap : IVisualMap
 {
+	/// <summary>Gets the visual map type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "continuous";
 

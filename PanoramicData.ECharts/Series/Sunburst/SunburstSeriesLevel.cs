@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a level configuration for the Sunburst series.</summary>
 public partial class SunburstSeriesLevel
 {
 	/// <summary>

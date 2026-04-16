@@ -4,8 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Configures a graph (network) chart series for ECharts. See https://echarts.apache.org/en/option.html#series-graph for full documentation.</summary>
 public partial class GraphSeries : ISeries
 {
+	/// <summary>Gets the series type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "graph";
 
@@ -379,6 +381,7 @@ public partial class GraphSeries : ISeries
 	[JsonPropertyName("categories")]
 	public object? Categories { get; set; }
 
+	/// <summary>Gets or sets the graph categories as a strongly typed list.</summary>
 	[JsonIgnore]
 	public List<GraphSeriesCategories>? CategoriesList
 	{
@@ -424,6 +427,7 @@ public partial class GraphSeries : ISeries
 	[JsonPropertyName("data")]
 	public object? Data { get; set; }
 
+	/// <summary>Gets or sets the graph nodes as a strongly typed data list.</summary>
 	[JsonIgnore]
 	public List<GraphSeriesData>? DataList
 	{
@@ -438,6 +442,7 @@ public partial class GraphSeries : ISeries
 	[JsonPropertyName("nodes")]
 	public object? Nodes { get; set; }
 
+	/// <summary>Gets or sets the graph nodes through the alias collection.</summary>
 	[JsonIgnore]
 	public List<GraphSeriesData>? NodesList
 	{
@@ -460,6 +465,7 @@ public partial class GraphSeries : ISeries
 	[JsonPropertyName("links")]
 	public object? Links { get; set; }
 
+	/// <summary>Gets or sets the graph links as a strongly typed list.</summary>
 	[JsonIgnore]
 	public List<GraphSeriesLink>? LinksList
 	{
@@ -474,6 +480,7 @@ public partial class GraphSeries : ISeries
 	[JsonPropertyName("edges")]
 	public object? Edges { get; set; }
 
+	/// <summary>Gets or sets the graph edges through the alias collection.</summary>
 	[JsonIgnore]
 	public List<GraphSeriesLink>? EdgesList
 	{

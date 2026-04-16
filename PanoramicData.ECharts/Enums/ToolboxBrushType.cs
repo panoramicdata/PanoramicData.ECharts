@@ -8,10 +8,16 @@ namespace PanoramicData.ECharts;
 [JsonConverter(typeof(CamelCaseEnumConverter<ToolboxBrushType>))]
 public enum ToolboxBrushType
 {
+	/// <summary>Rectangle brush selection.</summary>
 	Rect,
+	/// <summary>Polygon brush selection.</summary>
 	Polygon,
+	/// <summary>Horizontal line brush selection.</summary>
 	LineX,
+	/// <summary>Vertical line brush selection.</summary>
 	LineY,
+	/// <summary>Keeps the current brush selection.</summary>
 	Keep,
+	/// <summary>Clears the current brush selection.</summary>
 	Clear
 }

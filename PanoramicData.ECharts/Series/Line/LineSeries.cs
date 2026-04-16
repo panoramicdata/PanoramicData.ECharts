@@ -63,6 +63,7 @@ namespace PanoramicData.ECharts;
 /// </example>
 public partial class LineSeries : ISeries
 {
+	/// <summary>Gets the series type identifier.</summary>
 	[JsonPropertyName("type")]
 	public string Type => "line";
 

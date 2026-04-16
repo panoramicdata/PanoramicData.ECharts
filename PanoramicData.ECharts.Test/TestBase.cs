@@ -3,6 +3,7 @@ using Microsoft.Playwright;
 
 namespace PanoramicData.ECharts.Test;
 
+/// <summary>Base class providing shared Playwright browser setup for ECharts rendering tests.</summary>
 public class TestBase : IAsyncLifetime
 {
 	protected const string BaseUrl = "http://localhost:5185/example"; // Fixed: added /example prefix

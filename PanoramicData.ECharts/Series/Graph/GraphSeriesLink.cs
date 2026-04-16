@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents an edge (link) between nodes in the Graph series.</summary>
 public partial class GraphSeriesLink
 {
 	/// <summary>

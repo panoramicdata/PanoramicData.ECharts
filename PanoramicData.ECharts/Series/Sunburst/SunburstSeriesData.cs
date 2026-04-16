@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>Represents a data item for the Sunburst series.</summary>
 public partial class SunburstSeriesData
 {
 	/// <summary>

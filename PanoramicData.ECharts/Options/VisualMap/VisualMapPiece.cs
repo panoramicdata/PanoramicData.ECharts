@@ -19,9 +19,11 @@ public class VisualMapPiece
 	[JsonPropertyName("max")]
 	public double? Max { get; set; }
 
+	/// <summary>Gets or sets the exact value represented by this visual map piece.</summary>
 	[JsonPropertyName("value")]
 	public double? Value { get; set; }
 
+	/// <summary>Gets or sets the display label for this visual map piece.</summary>
 	[JsonPropertyName("label")]
 	public string? Label { get; set; }
 

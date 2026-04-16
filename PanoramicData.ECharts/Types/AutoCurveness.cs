@@ -57,6 +57,7 @@ public class AutoCurveness
 		return new AutoCurveness(length);
 	}
 
+	/// <summary>Implicitly converts a double array to an <see cref="AutoCurveness"/> with explicit curveness values.</summary>
 	public static implicit operator AutoCurveness(double[] arr)
 	{
 		return new AutoCurveness(arr);
