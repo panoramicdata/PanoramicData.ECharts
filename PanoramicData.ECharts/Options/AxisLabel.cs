@@ -4,6 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>
+/// Configures the AxisLabel option for ECharts.
+/// See https://echarts.apache.org/en/option.html for full documentation.
+/// </summary>
 public partial class AxisLabel
 {
 	/// <summary>

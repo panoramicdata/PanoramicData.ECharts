@@ -4,6 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>
+/// Configures the filter dataset transform for ECharts.
+/// See https://echarts.apache.org/en/option.html for full documentation.
+/// </summary>
 public partial class FilterTransform : IDatasetTransform
 {
 	[JsonPropertyName("type")]

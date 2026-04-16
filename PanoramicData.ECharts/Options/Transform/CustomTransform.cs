@@ -3,6 +3,10 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>
+/// Configures a custom dataset transform for ECharts.
+/// See https://echarts.apache.org/en/option.html for full documentation.
+/// </summary>
 public class CustomTransform : IDatasetTransform
 {
 	public CustomTransform(string type)

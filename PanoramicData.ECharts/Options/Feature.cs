@@ -2,6 +2,10 @@ using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>
+/// Configures the Feature option for ECharts toolbox.
+/// See https://echarts.apache.org/en/option.html for full documentation.
+/// </summary>
 public partial class Feature
 {
 	/// <summary>

@@ -6,6 +6,10 @@ using PanoramicData.ECharts.Internal;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>
+/// Configures the ChartOptions for ECharts.
+/// See https://echarts.apache.org/en/option.html for full documentation.
+/// </summary>
 public partial class ChartOptions
 {
 	/// <summary>
