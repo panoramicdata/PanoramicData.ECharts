@@ -10,8 +10,7 @@
     <RepositoryUrl>https://github.com/panoramicdata/PanoramicData.ECharts</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralResourcesLanguage>en</NeutralResourcesLanguage>
   </PropertyGroup>

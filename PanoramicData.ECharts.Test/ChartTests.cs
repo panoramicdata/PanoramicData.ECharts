@@ -5,6 +5,7 @@ namespace PanoramicData.ECharts.Test;
 /// <summary>Tests for individual chart rendering scenarios.</summary>
 public class ChartTests : TestBase
 {
+	/// <summary>Verifies that a simple pie chart renders and displays its title.</summary>
 	[Fact]
 	public async Task SimplePieChart_Renders_Successfully()
 	{
@@ -29,6 +30,7 @@ public class ChartTests : TestBase
 		await TakeScreenshotAsync("pie-simple.png");
 	}
 
+	/// <summary>Verifies that a sunburst chart with external data loads and renders correctly.</summary>
 	[Fact]
 	public async Task SimpleSunburstChart_WithExternalData_Renders()
 	{
@@ -48,6 +50,7 @@ public class ChartTests : TestBase
 		await TakeScreenshotAsync("sunburst-simple.png");
 	}
 
+	/// <summary>Verifies that a Sankey chart using a path expression for external data renders correctly.</summary>
 	[Fact]
 	public async Task SankeyWithLevels_WithPathExpression_Renders()
 	{
@@ -66,6 +69,7 @@ public class ChartTests : TestBase
 		await TakeScreenshotAsync("sankey-levels.png");
 	}
 
+	/// <summary>Verifies that a simple line chart renders and ECharts initializes correctly.</summary>
 	[Fact]
 	public async Task SimpleLineChart_Renders_Successfully()
 	{
@@ -79,6 +83,7 @@ public class ChartTests : TestBase
 		await TakeScreenshotAsync("line-simple.png");
 	}
 
+	/// <summary>Verifies that a simple bar chart renders correctly.</summary>
 	[Fact]
 	public async Task SimpleBarChart_Renders_Successfully()
 	{
@@ -91,6 +96,7 @@ public class ChartTests : TestBase
 		await TakeScreenshotAsync("bar-simple.png");
 	}
 
+	/// <summary>Verifies that a chart using parameter-driven updates continues to render after an options change.</summary>
 	[Fact]
 	public async Task ParameterSetSampleChart_DynamicUpdate_Works()
 	{
@@ -114,6 +120,7 @@ public class ChartTests : TestBase
 		await TakeScreenshotAsync("parameter-after.png");
 	}
 
+	/// <summary>Verifies that no JavaScript console errors are produced when loading various chart pages.</summary>
 	[Fact]
 	public async Task NoConsoleErrors_OnChartLoad()
 	{

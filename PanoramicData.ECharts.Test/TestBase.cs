@@ -6,14 +6,21 @@ namespace PanoramicData.ECharts.Test;
 /// <summary>Base class providing shared Playwright browser setup for ECharts rendering tests.</summary>
 public class TestBase : IAsyncLifetime
 {
+	/// <summary>Gets the base URL of the demo application under test.</summary>
 	protected const string BaseUrl = "http://localhost:5185/example"; // Fixed: added /example prefix
+	/// <summary>Gets the default timeout in milliseconds for Playwright operations.</summary>
 	protected const int DefaultTimeout = 20000; // 20 seconds - increased for chart initialization
 
+	/// <summary>Gets the Playwright instance used for browser automation.</summary>
 	protected IPlaywright? Playwright { get; private set; }
+	/// <summary>Gets the browser instance used for tests.</summary>
 	protected IBrowser? Browser { get; private set; }
+	/// <summary>Gets the browser context for isolating test state.</summary>
 	protected IBrowserContext? Context { get; private set; }
+	/// <summary>Gets the page used to navigate and interact with the demo application.</summary>
 	protected IPage Page { get; private set; } = null!;
 
+	/// <summary>Initializes Playwright, launches a browser, and creates a page before each test.</summary>
 	public async ValueTask InitializeAsync()
 	{
 		// Install playwright
@@ -44,6 +51,7 @@ public class TestBase : IAsyncLifetime
 		Page.SetDefaultTimeout(DefaultTimeout);
 	}
 
+	/// <summary>Closes the page, browser context, browser, and Playwright instance after each test.</summary>
 	public async ValueTask DisposeAsync()
 	{
 		if (Page != null)

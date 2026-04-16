@@ -5,6 +5,7 @@ namespace PanoramicData.ECharts.Test;
 /// <summary>Tests for all chart types rendered in the demo application.</summary>
 public class AllChartsTests : TestBase
 {
+	/// <summary>Gets the theory data containing category, route, and name for every chart in the demo application.</summary>
 	public static TheoryData<string, string, string> AllCharts =>
 		new()
 		{
@@ -70,6 +71,7 @@ public class AllChartsTests : TestBase
 			{ "misc", "toolbox", "ToolboxSampleChart" },
 		};
 
+	/// <summary>Verifies that the chart at the given route renders without JavaScript errors.</summary>
 	[Theory]
 	[MemberData(nameof(AllCharts))]
 	public async Task Chart_Renders_WithoutErrors(string category, string route, string name)
@@ -92,6 +94,7 @@ public class AllChartsTests : TestBase
 		await TakeScreenshotAsync(screenshotFilename);
 	}
 
+	/// <summary>Verifies that a representative set of charts expose the correct ECharts global object.</summary>
 	[Fact]
 	public async Task VerifyAllCharts_HaveCorrectGlobalObject()
 	{

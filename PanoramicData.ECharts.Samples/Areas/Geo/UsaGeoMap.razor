@@ -193,7 +193,9 @@
 		{
 			showMap = !showMap;
 
+#pragma warning disable BL0005
 			chart.Options = showMap ? mapOptions : barOptions;
+#pragma warning restore BL0005
 
 			await chart.UpdateAsync();
 		}
