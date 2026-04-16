@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Solution>
   <Folder Name="/Project Planning/">
     <File Path="docs/PHASE_01_PRE_UPDATE_ASSESSMENT.md" />
@@ -31,6 +32,10 @@
     <File Path="README.md" />
     <File Path="run-tests.ps1" />
     <File Path="version.json" />
+    <File Path="CONTRIBUTING.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="SECURITY.md" />
   </Folder>
   <Project Path="PanoramicData.ECharts.BindingGenerator/PanoramicData.ECharts.BindingGenerator.csproj" />
   <Project Path="PanoramicData.ECharts.Demo/PanoramicData.ECharts.Demo.csproj" />

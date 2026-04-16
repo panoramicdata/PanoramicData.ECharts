@@ -4,12 +4,15 @@ using System.Text.Json.Serialization;
 namespace PanoramicData.ECharts;
 
 /// <summary>
-/// Center position of Pie chart, the first of which is the horizontal position, and the second is the vertical position.
-/// Percentage is supported.When set in percentage, the item is relative to the container width, and the second item to the height.
+/// Represents the arrow symbols at the start and end of an axis line.
+/// Can be set to the same symbol for both ends, or different symbols for start and end.
+/// See https://echarts.apache.org/en/option.html#xAxis.axisLine.symbol
 /// </summary>
 [JsonConverter(typeof(AxisLineSymbolConverter))]
 public class AxisLineSymbol
 {
+	/// <summary>Creates an <see cref="AxisLineSymbol"/> using the same symbol for both ends of the axis line.</summary>
+	/// <param name="both">The symbol to use for both the start and end of the axis line.</param>
 	public AxisLineSymbol(Icon both)
 	{
 		Start = both;
@@ -17,6 +20,9 @@ public class AxisLineSymbol
 		AreSame = true;
 	}
 
+	/// <summary>Creates an <see cref="AxisLineSymbol"/> with different symbols for each end of the axis line.</summary>
+	/// <param name="start">The symbol at the start (min side) of the axis line.</param>
+	/// <param name="end">The symbol at the end (max side) of the axis line.</param>
 	public AxisLineSymbol(Icon start, Icon end)
 	{
 		Start = start;
@@ -24,16 +30,21 @@ public class AxisLineSymbol
 		AreSame = false;
 	}
 
+	/// <summary>Gets the symbol at the start of the axis line.</summary>
 	public Icon Start { get; }
+	/// <summary>Gets the symbol at the end of the axis line.</summary>
 	public Icon End { get; }
 
 	internal bool AreSame { get; }
 }
 
+/// <summary>JSON converter for <see cref="AxisLineSymbol"/> that serializes as a single value or two-element array.</summary>
 public class AxisLineSymbolConverter : JsonConverter<AxisLineSymbol>
 {
+	/// <inheritdoc/>
 	public override AxisLineSymbol Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) => throw new NotImplementedException("Deserialization is not implemented for AxisLineSymbol.");
 
+	/// <inheritdoc/>
 	public override void Write(Utf8JsonWriter writer, AxisLineSymbol value, JsonSerializerOptions options)
 	{
 		if (value.AreSame)

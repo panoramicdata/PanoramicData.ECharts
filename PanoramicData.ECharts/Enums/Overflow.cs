@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using static System.Net.Mime.MediaTypeNames;
+﻿using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 

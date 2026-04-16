@@ -1,9 +1,66 @@
-
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>
+/// Represents a line series for creating line charts and area charts.
+/// </summary>
+/// <remarks>
+/// <para>
+/// Line series is one of the most commonly used chart types in ECharts, suitable for visualizing
+/// trends and changes over time or continuous data. It can display data as lines, smooth curves,
+/// step lines, or area-filled charts.
+/// </para>
+/// <para>
+/// <strong>Common Use Cases:</strong>
+/// </para>
+/// <list type="bullet">
+/// <item><description>Time series data (stock prices, sensor readings, etc.)</description></item>
+/// <item><description>Trend analysis and forecasting</description></item>
+/// <item><description>Comparing multiple data series</description></item>
+/// <item><description>Showing cumulative values with stacked lines</description></item>
+/// <item><description>Area charts for showing magnitude or volume</description></item>
+/// </list>
+/// <para>
+/// See <see href="https://echarts.apache.org/en/option.html#series-line">ECharts Line Series Documentation</see>
+/// for more configuration options and examples.
+/// </para>
+/// </remarks>
+/// <example>
+/// Simple line chart example:
+/// <code>
+/// var options = new ChartOptions
+/// {
+///     XAxis = new XAxis { Type = AxisType.Category, Data = new[] { "Mon", "Tue", "Wed", "Thu", "Fri" } },
+///     YAxis = new YAxis { Type = AxisType.Value },
+///     Series = new()
+///     {
+///         new LineSeries
+///         {
+///             Name = "Sales",
+///             Data = new List&lt;double&gt; { 120, 200, 150, 80, 70 }
+///         }
+///     }
+/// };
+/// </code>
+/// Smooth line chart with area fill:
+/// <code>
+/// var options = new ChartOptions
+/// {
+///     Series = new()
+///     {
+///         new LineSeries
+///         {
+///             Name = "Temperature",
+///             Smooth = true,
+///             AreaStyle = new AreaStyle(),  // Enable area fill
+///             Data = new List&lt;double&gt; { 23.5, 24.1, 25.3, 24.8, 23.9 }
+///         }
+///     }
+/// };
+/// </code>
+/// </example>
 public partial class LineSeries : ISeries
 {
 	[JsonPropertyName("type")]

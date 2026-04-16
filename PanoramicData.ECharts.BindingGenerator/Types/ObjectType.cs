@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
-using System.Xml.Linq;
-
-namespace PanoramicData.ECharts.BindingGenerator.Types;
+﻿namespace PanoramicData.ECharts.BindingGenerator.Types;
 
 internal class ObjectType : IPropertyType, IObjectType
 {

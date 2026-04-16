@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # PanoramicData.ECharts
 
 [![Nuget](https://img.shields.io/nuget/v/PanoramicData.ECharts)](https://www.nuget.org/packages/PanoramicData.ECharts/)

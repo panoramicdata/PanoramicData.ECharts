@@ -11,12 +11,21 @@ namespace PanoramicData.ECharts;
 /// </summary>
 public class ExternalDataSource
 {
+	/// <summary>Creates an <see cref="ExternalDataSource"/> with just a URL.</summary>
+	/// <param name="url">The URL of the data source.</param>
 	public ExternalDataSource(string url)
 	{
 		FetchId = EChartBase.GenerateRandomId();
 		Url = url;
 	}
 
+	/// <summary>Creates an <see cref="ExternalDataSource"/> with a URL and optional configuration.</summary>
+	/// <param name="url">The URL of the data source.</param>
+	/// <param name="fetchAs">How to interpret the fetched data.</param>
+	/// <param name="path">Optional path to a property within the returned JSON.</param>
+	/// <param name="options">Optional fetch options (headers, method, etc.).</param>
+	/// <param name="afterLoad">Optional JavaScript function to transform data after loading.</param>
+	/// <param name="fetchId">Optional unique identifier; auto-generated if not provided.</param>
 	public ExternalDataSource(string url, ExternalDataFetchAs fetchAs = ExternalDataFetchAs.Json, string? path = null, FetchOptions? options = null, JavascriptFunction? afterLoad = null, string? fetchId = null)
 	{
 		FetchId = fetchId ?? EChartBase.GenerateRandomId();
@@ -64,13 +73,16 @@ public class ExternalDataSource
 	public FetchOptions? Options { get; set; }
 }
 
+/// <summary>JSON converter for <see cref="ExternalDataSource"/>. Direct serialization is not supported; use <see cref="ExternalDataSourceRef"/> instead.</summary>
 public class ExternalDataSourceConverter : JsonConverter<ExternalDataSource>
 {
 	internal ExternalDataSourceConverter()
 	{
 	}
 
+	/// <inheritdoc/>
 	public override ExternalDataSource Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) => throw new NotImplementedException("Deserialization is not implemented for ExternalDataSource.");
 
+	/// <inheritdoc/>
 	public override void Write(Utf8JsonWriter writer, ExternalDataSource value, JsonSerializerOptions options) => throw new InvalidOperationException("ExternalDataSource cannot be serialized, please use ExternalDataSourceRef");
 }

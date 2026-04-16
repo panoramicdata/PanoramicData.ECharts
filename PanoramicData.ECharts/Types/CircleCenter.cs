@@ -4,26 +4,34 @@ using System.Text.Json.Serialization;
 namespace PanoramicData.ECharts;
 
 /// <summary>
-/// Center position of Pie chart, the first of which is the horizontal position, and the second is the vertical position.
-/// Percentage is supported.When set in percentage, the item is relative to the container width, and the second item to the height.
+/// Represents the center position of a circular chart element (e.g., Pie, Radar) as horizontal and vertical coordinates.
+/// Values can be absolute numbers or percentages relative to the container size.
+/// See https://echarts.apache.org/en/option.html#series-pie.center
 /// </summary>
 [JsonConverter(typeof(CircleCenterConverter))]
 public class CircleCenter
 {
+	/// <summary>Creates a <see cref="CircleCenter"/> with horizontal and vertical position values.</summary>
+	/// <param name="horizontal">The horizontal center position (number or percentage string).</param>
+	/// <param name="vertical">The vertical center position (number or percentage string).</param>
 	public CircleCenter(NumberOrString horizontal, NumberOrString vertical)
 	{
 		Horizontal = horizontal;
 		Vertical = vertical;
 	}
 
+	/// <summary>Gets the horizontal center position.</summary>
 	public NumberOrString Horizontal { get; }
+	/// <summary>Gets the vertical center position.</summary>
 	public NumberOrString Vertical { get; }
 }
 
 public class CircleCenterConverter : JsonConverter<CircleCenter>
 {
+	/// <inheritdoc/>
 	public override CircleCenter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) => throw new NotImplementedException("Deserialization is not implemented for CircleCenter.");
 
+	/// <inheritdoc/>
 	public override void Write(Utf8JsonWriter writer, CircleCenter value, JsonSerializerOptions options)
 	{
 		writer.WriteStartArray();

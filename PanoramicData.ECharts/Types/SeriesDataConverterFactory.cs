@@ -3,8 +3,12 @@ using System.Text.Json;
 
 namespace PanoramicData.ECharts;
 
+/// <summary>
+/// A <see cref="JsonConverterFactory"/> that creates converters for <see cref="SeriesData{T1,T2}"/> and <see cref="SeriesData{T1,T2,T3}"/> generic types.
+/// </summary>
 public class SeriesDataConverterFactory : JsonConverterFactory
 {
+	/// <inheritdoc/>
 	public override bool CanConvert(Type typeToConvert)
 	{
 		if (!typeToConvert.IsGenericType)
@@ -14,6 +18,7 @@ public class SeriesDataConverterFactory : JsonConverterFactory
 		return genericDef == typeof(SeriesData<,>) || genericDef == typeof(SeriesData<,,>);
 	}
 
+	/// <inheritdoc/>
 	public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
 	{
 		Type[] genericArgs = typeToConvert.GetGenericArguments();

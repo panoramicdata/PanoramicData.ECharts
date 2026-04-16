@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
 
@@ -9,6 +8,8 @@ namespace PanoramicData.ECharts;
 [JsonConverter(typeof(LowerCaseEnumConverter<LineCoordinateSystem>))]
 public enum LineCoordinateSystem
 {
+	/// <summary>Uses a 2D Cartesian coordinate system (x/y axes). Default for most chart types.</summary>
 	Cartesian2D,
+	/// <summary>Uses a polar coordinate system (angle and radius axes).</summary>
 	Polar
 }

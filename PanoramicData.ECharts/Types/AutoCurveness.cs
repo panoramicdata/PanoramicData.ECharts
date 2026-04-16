@@ -37,16 +37,21 @@ public class AutoCurveness
 		Array = arr;
 	}
 
+	/// <summary>Gets the boolean value, or <c>null</c> if a number or array is set.</summary>
 	public bool? Bool { get; }
 
+	/// <summary>Gets the curveness array length, or <c>null</c> if a boolean or array is set.</summary>
 	public double? Length { get; }
+	/// <summary>Gets the explicit curveness array, or <c>null</c> if a boolean or length is set.</summary>
 	public double[]? Array { get; }
 
+	/// <summary>Implicitly converts a bool to an <see cref="AutoCurveness"/>.</summary>
 	public static implicit operator AutoCurveness(bool b)
 	{
 		return new AutoCurveness(b);
 	}
 
+	/// <summary>Implicitly converts a double to an <see cref="AutoCurveness"/> with the given array length.</summary>
 	public static implicit operator AutoCurveness(double length)
 	{
 		return new AutoCurveness(length);
@@ -58,10 +63,13 @@ public class AutoCurveness
 	}
 }
 
+/// <summary>JSON converter for <see cref="AutoCurveness"/> that serializes to a boolean, number, or array.</summary>
 public class AutoCurvenessConverter : JsonConverter<AutoCurveness>
 {
+	/// <inheritdoc/>
 	public override AutoCurveness Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) => throw new NotImplementedException("Deserialization is not implemented for AutoCurveness.");
 
+	/// <inheritdoc/>
 	public override void Write(Utf8JsonWriter writer, AutoCurveness value, JsonSerializerOptions options)
 	{
 		if (value.Bool != null)

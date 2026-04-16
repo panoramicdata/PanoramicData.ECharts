@@ -19,10 +19,13 @@ public enum TriggerOn
 	None
 }
 
+/// <summary>JSON converter for <see cref="TriggerOn"/> that maps values to ECharts trigger string formats.</summary>
 public class TriggerOnConverter : JsonConverter<TriggerOn>
 {
+	/// <inheritdoc/>
 	public override TriggerOn Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) => throw new NotImplementedException("Deserialization is not implemented for TooltipTriggerOn.");
 
+	/// <inheritdoc/>
 	public override void Write(Utf8JsonWriter writer, TriggerOn value, JsonSerializerOptions options)
 	{
 		switch (value)

@@ -1,4 +1,6 @@
-﻿[*.{cs,vb}]
+root = true
+
+[*.{cs,vb}]
 
 # IDE0130: Namespace does not match folder structure
 dotnet_style_namespace_match_folder = false:silent
@@ -90,3 +92,4 @@ dotnet_naming_style.pascal_case.required_prefix =
 dotnet_naming_style.pascal_case.required_suffix =
 dotnet_naming_style.pascal_case.word_separator =
 dotnet_naming_style.pascal_case.capitalization = pascal_case
+csharp_style_namespace_declarations = file_scoped:error

@@ -1,5 +1,9 @@
 ﻿namespace PanoramicData.ECharts;
 
+/// <summary>
+/// Represents options passed to the browser Fetch API when retrieving data for an <see cref="ExternalDataSource"/>.
+/// See https://developer.mozilla.org/en-US/docs/Web/API/fetch for full documentation of each option.
+/// </summary>
 public class FetchOptions
 {
 	/// <summary>

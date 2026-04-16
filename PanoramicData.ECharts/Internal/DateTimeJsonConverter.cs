@@ -3,10 +3,16 @@ using System.Text.Json;
 
 namespace PanoramicData.ECharts.Internal;
 
+/// <summary>
+/// Serializes <see cref="DateTime"/> values to ISO 8601 UTC strings for ECharts (e.g., "2024-06-15T12:00:00.000Z").
+/// Local times are converted to UTC before serialization.
+/// </summary>
 public class DateTimeJsonConverter : JsonConverter<DateTime>
 {
+	/// <inheritdoc/>
 	public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) => throw new NotImplementedException("Deserialization is not implemented for DateTime.");
 
+	/// <inheritdoc/>
 	public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
 	{
 		if (value.Kind == DateTimeKind.Local)

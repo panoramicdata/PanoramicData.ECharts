@@ -1,9 +1,7 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Nodes;
 using PanoramicData.ECharts.BindingGenerator.Types;
 using PanoramicData.ECharts.BindingGenerator.Generators;
 using PanoramicData.ECharts.BindingGenerator.Phases;
-using System.Data;
 
 namespace PanoramicData.ECharts.BindingGenerator;
 

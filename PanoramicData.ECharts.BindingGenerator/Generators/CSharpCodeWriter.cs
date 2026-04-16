@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Text;
 using HtmlAgilityPack;
-using Microsoft.Extensions.Primitives;
 
 namespace PanoramicData.ECharts.BindingGenerator.Generators;
 
