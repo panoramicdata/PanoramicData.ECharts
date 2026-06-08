@@ -172,9 +172,6 @@ window.panoramicDataECharts = {
 		// set the chart options
 		chart.setOption(parsedOptions);
 
-		// resize to fit container in case dimensions changed since last render
-		chart.resize();
-
 		// hide the loading animation
 		chart.hideLoading();
 	},
