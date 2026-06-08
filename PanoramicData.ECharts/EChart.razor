@@ -36,13 +36,12 @@
 		// register the chart in a group if available
 		Group?.Add(this);
 
-		// omit width/height when unset so ECharts auto-detects dimensions from container CSS
-		var initOptions = JsonSerializer.Serialize(new
-		{
-			renderer = Renderer.ToJsParam(),
-			width = Width ?? "auto",
-			height = Height ?? "auto"
-		});
+		// omit width/height when unset — passing null or "auto" causes SVG attribute errors;
+		// ECharts will auto-detect from container CSS when the properties are absent
+		var initOptionsDict = new Dictionary<string, object> { { "renderer", Renderer.ToJsParam() } };
+		if (Width is not null) initOptionsDict["width"] = Width;
+		if (Height is not null) initOptionsDict["height"] = Height;
+		var initOptions = JsonSerializer.Serialize(initOptionsDict);
 
 		try
 		{

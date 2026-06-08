@@ -146,6 +146,9 @@ window.panoramicDataECharts = {
 		// set the chart options
 		chart.setOption(parsedOptions);
 
+		// resize to fit container in case CSS dimensions weren't computed at init time
+		chart.resize();
+
 		// hide the loading animation immediately
 		chart.hideLoading();
 	},
@@ -168,6 +171,9 @@ window.panoramicDataECharts = {
 
 		// set the chart options
 		chart.setOption(parsedOptions);
+
+		// resize to fit container in case dimensions changed since last render
+		chart.resize();
 
 		// hide the loading animation
 		chart.hideLoading();
