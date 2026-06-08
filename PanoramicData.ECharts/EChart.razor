@@ -1,9 +1,5 @@
-﻿@using Microsoft.JSInterop;
-@using System.Text.Json;
-@using System.Text.Json.Serialization;
-@using System.Text;
-@using PanoramicData.ECharts;
-@using PanoramicData.ECharts.Internal;
+﻿@using System.Text.Json;
+@using Microsoft.JSInterop;
 
 @namespace PanoramicData.ECharts
 
@@ -14,6 +10,16 @@
 @code {
 
 	private bool _chartInitialized = false;
+	private ChartOptions? _previousOptions;
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if (!_chartInitialized || Options == _previousOptions)
+			return;
+
+		_previousOptions = Options;
+		await UpdateAsync(false);
+	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -30,12 +36,12 @@
 		// register the chart in a group if available
 		Group?.Add(this);
 
-		// options passed to echarts.init
+		// omit width/height when unset so ECharts auto-detects dimensions from container CSS
 		var initOptions = JsonSerializer.Serialize(new
 		{
 			renderer = Renderer.ToJsParam(),
-			width = Width,
-			height = Height
+			width = Width ?? "auto",
+			height = Height ?? "auto"
 		});
 
 		try
