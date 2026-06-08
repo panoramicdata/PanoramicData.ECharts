@@ -146,8 +146,8 @@ window.panoramicDataECharts = {
 		// set the chart options
 		chart.setOption(parsedOptions);
 
-		// resize to fit container in case CSS dimensions weren't computed at init time
-		chart.resize();
+		// schedule resize after current call stack so the browser has time to compute layout
+		setTimeout(() => { var c = panoramicDataECharts.charts.get(id); if (c) c.resize(); }, 0);
 
 		// hide the loading animation immediately
 		chart.hideLoading();
@@ -168,6 +168,9 @@ window.panoramicDataECharts = {
 
 		// parse the options using eval to support JavaScript functions
 		var parsedOptions = eval('(' + chartOptions + ')');
+
+		// resize before setting options so container dimensions are correct when animations play
+		chart.resize();
 
 		// set the chart options
 		chart.setOption(parsedOptions);
