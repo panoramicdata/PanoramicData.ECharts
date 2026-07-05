@@ -9,11 +9,11 @@
     <PackageVersion Include="CommandLineParser" Version="2.9.1" />
     <PackageVersion Include="coverlet.collector" Version="8.0.1" />
     <PackageVersion Include="HtmlAgilityPack" Version="1.12.4" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components" Version="10.0.6" />
-    <PackageVersion Include="Microsoft.JSInterop" Version="10.0.6" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.JSInterop" Version="10.0.9" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
     <PackageVersion Include="Microsoft.Playwright" Version="1.59.0" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.202" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.300" />
     <PackageVersion Include="Nerdbank.GitVersioning" Version="3.9.50" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
