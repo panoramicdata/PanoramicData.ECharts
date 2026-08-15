@@ -133,7 +133,7 @@ public class TestBase : IAsyncLifetime
 		oldGlobal.Should().BeFalse("Old window.vizorECharts still exists");
 
 		var version = await Page.EvaluateAsync<string>("() => echarts.version");
-		version.Should().Be("6.0.0");
+		version.Should().Be("6.1.0");
 	}
 
 	/// <summary>

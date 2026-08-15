@@ -87,7 +87,7 @@ public class AllChartsTests : TestBase
 
 		// Verify ECharts version
 		var version = await Page.EvaluateAsync<string>("() => echarts.version");
-		version.Should().Be("6.0.0");
+		version.Should().Be("6.1.0");
 
 		// Take screenshot
 		var screenshotFilename = $"{category}-{route}.png";
