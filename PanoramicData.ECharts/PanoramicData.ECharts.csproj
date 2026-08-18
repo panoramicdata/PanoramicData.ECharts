@@ -8,7 +8,6 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Panoramic Data Limited, DataHint BV, Ben Motmans</Authors>
     <Company>Panoramic Data Limited</Company>
-    <Copyright>Copyright © Panoramic Data Limited 2026</Copyright>
     <Product>Vizor ECharts components for Blazor</Product>
     <ProductName>PanoramicData.ECharts</ProductName>
     <PackageProjectUrl>https://github.com/panoramicdata/PanoramicData.ECharts</PackageProjectUrl>
@@ -19,6 +18,7 @@
     <PackageTags>blazor;echarts;apache;chart;library;vizor</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>Blazor wrapper for Apache ECharts.</Description>
+    <PackageReleaseNotes>See the changelog at https://github.com/panoramicdata/PanoramicData.ECharts/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <WarningsAsErrors>true</WarningsAsErrors>
     <Title>PanoramicData.ECharts</Title>
     <PackageId>PanoramicData.ECharts</PackageId>
