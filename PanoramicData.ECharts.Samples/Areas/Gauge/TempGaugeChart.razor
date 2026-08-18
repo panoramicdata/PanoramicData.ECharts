@@ -1,6 +1,7 @@
 ﻿@using PanoramicData.ECharts;
+@using Microsoft.JSInterop;
 
-@implements IDisposable
+@implements IAsyncDisposable
 
 <PanoramicData.ECharts.EChart @ref="chart" Options="@options" Width="800px" Height="400px" />
 
@@ -8,7 +9,8 @@
 
 	// see https://echarts.apache.org/examples/en/editor.html?c=gauge-temperature
 
-	private Timer? timer;
+	private readonly CancellationTokenSource cts = new();
+	private Task? updateLoop;
 	private PanoramicData.ECharts.EChart? chart;
 	private readonly Random rnd = new();
 
@@ -135,9 +137,33 @@
 			}
 		};
 
-        protected override void OnInitialized() =>
-            // Start the timer when the component is initialized.
-            timer = new Timer(async _ => await UpdateChartAsync(), null, 2000, 2000);
+	// The previous version passed an async lambda to Timer. TimerCallback returns void, so that
+	// compiled as async void: when the circuit was disposed, the next tick called JS interop on a
+	// dead circuit and the TaskCanceledException was rethrown on a ThreadPool thread with nothing
+	// observing it, terminating the host process. Timer.Dispose could not prevent that, because it
+	// does not wait for a callback that is already in flight.
+	protected override void OnInitialized() => updateLoop = RunUpdateLoopAsync(cts.Token);
+
+	private async Task RunUpdateLoopAsync(CancellationToken cancellationToken)
+	{
+		using var timer = new PeriodicTimer(TimeSpan.FromSeconds(2));
+
+		try
+		{
+			while (await timer.WaitForNextTickAsync(cancellationToken))
+			{
+				await UpdateChartAsync();
+			}
+		}
+		catch (OperationCanceledException)
+		{
+			// Expected: the component is being disposed.
+		}
+		catch (JSDisconnectedException)
+		{
+			// The circuit went away between the tick firing and the interop call.
+		}
+	}
 
         private async Task UpdateChartAsync()
 	{
@@ -155,5 +181,17 @@
 		await chart.UpdateAsync();
 	}
 
-        public void Dispose() => timer?.Dispose();
+	public async ValueTask DisposeAsync()
+	{
+		await cts.CancelAsync();
+
+		if (updateLoop is not null)
+		{
+			// Waits for a tick that is already running, which Timer.Dispose could not do. The loop
+			// swallows cancellation and disconnection, so this completes promptly.
+			await updateLoop;
+		}
+
+		cts.Dispose();
+	}
 }
