@@ -6,6 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>true</WarningsAsErrors>
+    <!-- A build-time code generator, not a consumable library. Without this the bare
+         "dotnet pack" in CI sweeps it up and tries to publish it. -->
+    <IsPackable>false</IsPackable>
     <PackageId>PanoramicData.ECharts.BindingGenerator</PackageId>
     <RepositoryUrl>https://github.com/panoramicdata/PanoramicData.ECharts</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>

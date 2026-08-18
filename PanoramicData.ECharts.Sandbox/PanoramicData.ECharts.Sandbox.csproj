@@ -5,6 +5,9 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- A scratch console app, not a consumable library. Without this the bare
+         "dotnet pack" in CI sweeps it up and tries to publish it. -->
+    <IsPackable>false</IsPackable>
     <PackageId>PanoramicData.ECharts.Sandbox</PackageId>
     <RepositoryUrl>https://github.com/panoramicdata/PanoramicData.ECharts</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
