@@ -8,7 +8,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Panoramic Data Limited, DataHint BV, Ben Motmans</Authors>
     <Company>Panoramic Data Limited</Company>
-    <Copyright>Copyright © Panoramic Data Limited 2025</Copyright>
+    <Copyright>Copyright © Panoramic Data Limited 2026</Copyright>
     <Product>Vizor ECharts components for Blazor</Product>
     <ProductName>PanoramicData.ECharts</ProductName>
     <PackageProjectUrl>https://github.com/panoramicdata/PanoramicData.ECharts</PackageProjectUrl>
