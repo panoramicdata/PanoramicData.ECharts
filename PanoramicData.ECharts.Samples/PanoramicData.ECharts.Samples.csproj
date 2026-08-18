@@ -15,6 +15,12 @@
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <!-- Without this the package falls back to the SDK default 1.0.0, which already exists on
+         nuget.org, so every push is rejected as a duplicate and no change here can ever ship. -->
+    <PackageReference Include="Nerdbank.GitVersioning">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PanoramicData.ECharts\PanoramicData.ECharts.csproj" />
