@@ -49,14 +49,14 @@ public class AxisSymbolConverter : JsonConverter<AxisSymbol>
 	{
 		if (value.Types.Length == 1)
 		{
-			writer.WriteStringValue(value.Types[0].ToString()!.ToLower());
+			writer.WriteStringValue(value.Types[0].ToString()!.ToLowerInvariant());
 		}
 		else
 		{
 			writer.WriteStartArray();
 			foreach (var val in value.Types)
 			{
-				writer.WriteStringValue(val.ToString().ToLower());
+				writer.WriteStringValue(val.ToString().ToLowerInvariant());
 			}
 
 			writer.WriteEndArray();

@@ -78,7 +78,7 @@ public class LineTypeConverter : JsonConverter<LineType>
 	{
 		if (value.Style != null)
 		{
-			writer.WriteStringValue(value.Style!.ToString()!.ToLower());
+			writer.WriteStringValue(value.Style!.ToString()!.ToLowerInvariant());
 		}
 		else if (value.Pattern != null)
 		{

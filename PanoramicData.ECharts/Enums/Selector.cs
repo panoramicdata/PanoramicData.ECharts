@@ -63,7 +63,7 @@ public class SelectorConverter : JsonConverter<Selector>
 			foreach (var val in value.ButtonsWithLabel)
 			{
 				writer.WriteStartObject();
-				writer.WriteString("type", val.Key.ToString()!.ToLower());
+				writer.WriteString("type", val.Key.ToString()!.ToLowerInvariant());
 				writer.WriteString("title", val.Value);
 				writer.WriteEndObject();
 			}
@@ -76,7 +76,7 @@ public class SelectorConverter : JsonConverter<Selector>
 			writer.WriteStartArray();
 			foreach (var val in value.Buttons)
 			{
-				writer.WriteStringValue(val.ToString()!.ToLower());
+				writer.WriteStringValue(val.ToString()!.ToLowerInvariant());
 			}
 
 			writer.WriteEndArray();

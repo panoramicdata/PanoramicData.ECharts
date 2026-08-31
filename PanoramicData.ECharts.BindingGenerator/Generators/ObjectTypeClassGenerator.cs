@@ -32,7 +32,9 @@ internal class ObjectTypeClassGenerator
 		}
 
 		if (dir != outputDir && !Directory.Exists(dir))
+		{
 			Directory.CreateDirectory(dir);
+		}
 
 		optionsFile = Path.Combine(dir, objectType.DotNetType + ".cs");
 	}
@@ -90,7 +92,9 @@ internal class ObjectTypeClassGenerator
 	private string GetDefaultAssign(object? defaultValue)
 	{
 		if (defaultValue == null)
+		{
 			return string.Empty;
+		}
 
 		if (defaultValue is string str)
 		{
@@ -98,11 +102,13 @@ internal class ObjectTypeClassGenerator
 		}
 		else if (defaultValue is bool b)
 		{
-			return $" = {b.ToString().ToLower()};";
+			return $" = {b.ToString().ToLowerInvariant()};";
 		}
 		else if (defaultValue is double d)
 		{
-			if ((d - (int)d) != 0)
+			// Exact comparison is intended: this asks whether d has any fractional part at all.
+			// A tolerance would misclassify small-but-real fractions such as 0.0001 as integers.
+			if ((d - (int)d) != 0) // NOSONAR S1244
 			{
 				// doubles with fractional part --> always write .
 				return $" = {d.ToString(System.Globalization.CultureInfo.InvariantCulture)};";

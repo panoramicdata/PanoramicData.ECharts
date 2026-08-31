@@ -87,7 +87,7 @@ public class MultiIndexConverter : JsonConverter<MultiIndex>
 	{
 		if (value.Type != null)
 		{
-			writer.WriteStringValue(value.Type!.ToString()!.ToLower());
+			writer.WriteStringValue(value.Type!.ToString()!.ToLowerInvariant());
 		}
 		else if (value.Indices != null)
 		{

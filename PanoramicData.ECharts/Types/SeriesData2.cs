@@ -37,7 +37,7 @@ public class SeriesDataConverter<T1, T2> : JsonConverter<SeriesData<T1, T2>>
 	{
 		writer.WriteStartArray();
 
-		if (value.Value1 == null)
+		if (value.Value1 is null) // NOSONAR S2955
 		{
 			writer.WriteNullValue();
 		}
@@ -46,7 +46,7 @@ public class SeriesDataConverter<T1, T2> : JsonConverter<SeriesData<T1, T2>>
 			JsonSerializer.Serialize(writer, value.Value1, options);
 		}
 
-		if (value.Value2 == null)
+		if (value.Value2 is null) // NOSONAR S2955
 		{
 			writer.WriteNullValue();
 		}

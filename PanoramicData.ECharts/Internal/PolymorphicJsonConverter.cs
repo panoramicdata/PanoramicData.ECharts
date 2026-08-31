@@ -9,7 +9,7 @@ internal class PolymorphicJsonConverter<T> : JsonConverter<T>
 
 	public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
 	{
-		if (value == null)
+		if (value is null) // NOSONAR S2955
 		{
 			writer.WriteNullValue();
 		}
@@ -26,7 +26,7 @@ internal class PolymorphicListJsonConverter<T> : JsonConverter<List<T>>
 
 	public override void Write(Utf8JsonWriter writer, List<T> value, JsonSerializerOptions options)
 	{
-		if (value == null)
+		if (value is null) // NOSONAR S2955
 		{
 			writer.WriteNullValue();
 		}
@@ -35,10 +35,14 @@ internal class PolymorphicListJsonConverter<T> : JsonConverter<List<T>>
 			writer.WriteStartArray();
 			foreach (var item in value)
 			{
-				if (item == null)
+				if (item is null) // NOSONAR S2955
+				{
 					writer.WriteNullValue();
+				}
 				else
+				{
 					JsonSerializer.Serialize(writer, item, item.GetType(), options);
+				}
 			}
 
 			writer.WriteEndArray();
@@ -52,7 +56,7 @@ internal class PolymorphicArrayJsonConverter<T> : JsonConverter<T[]>
 
 	public override void Write(Utf8JsonWriter writer, T[] value, JsonSerializerOptions options)
 	{
-		if (value == null)
+		if (value is null) // NOSONAR S2955
 		{
 			writer.WriteNullValue();
 		}
@@ -61,10 +65,14 @@ internal class PolymorphicArrayJsonConverter<T> : JsonConverter<T[]>
 			writer.WriteStartArray();
 			foreach (var item in value)
 			{
-				if (item == null)
+				if (item is null) // NOSONAR S2955
+				{
 					writer.WriteNullValue();
+				}
 				else
+				{
 					JsonSerializer.Serialize(writer, item, item.GetType(), options);
+				}
 			}
 
 			writer.WriteEndArray();

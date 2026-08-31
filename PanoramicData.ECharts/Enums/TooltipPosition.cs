@@ -85,7 +85,7 @@ public class TooltipPositionConverter : JsonConverter<TooltipPosition>
 	{
 		if (value.Type != null)
 		{
-			writer.WriteStringValue(value.Type!.ToString()!.ToLower());
+			writer.WriteStringValue(value.Type!.ToString()!.ToLowerInvariant());
 		}
 		else if (value.Position != null)
 		{

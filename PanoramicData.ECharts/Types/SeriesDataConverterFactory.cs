@@ -12,7 +12,9 @@ public class SeriesDataConverterFactory : JsonConverterFactory
 	public override bool CanConvert(Type typeToConvert)
 	{
 		if (!typeToConvert.IsGenericType)
+		{
 			return false;
+		}
 
 		var genericDef = typeToConvert.GetGenericTypeDefinition();
 		return genericDef == typeof(SeriesData<,>) || genericDef == typeof(SeriesData<,,>);

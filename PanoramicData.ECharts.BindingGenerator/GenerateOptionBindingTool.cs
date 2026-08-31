@@ -42,8 +42,6 @@ internal class GenerateOptionBindingTool
 			phase.Run(optionElem);
 		}
 
-		//var parser = new Parser();
-		//var chartOptions = parser.ParseRoot(optionElem);
 
 		// write regular option type classes
 		foreach (var objType in typeCollection.ListObjectTypesToGenerate())

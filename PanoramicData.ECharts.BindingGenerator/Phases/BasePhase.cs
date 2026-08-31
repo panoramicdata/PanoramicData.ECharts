@@ -18,7 +18,6 @@ internal abstract class BasePhase
 
 	protected virtual IPropertyType? ParseObjectType(OptionProperty parent, string propName, JsonElement value, string dataPrefix, string typeGroup)
 	{
-		//Console.WriteLine($"OBJECT {prop.Name}");
 
 		// special handling for 'anyOf' arrays
 		if (value.TryGetProperty("anyOf", out var anyOfElement))
@@ -34,7 +33,6 @@ internal abstract class BasePhase
 				continue;
 			}
 
-			//Console.WriteLine($"---anyOf {propName} {anyOfType}");
 			_ = ParseObjectType(parent, anyOfType, anyOfItemElement, dataPrefix: anyOfType, typeGroup: propName);
 		}			return new SimpleType("object");
 		}
@@ -72,7 +70,6 @@ internal abstract class BasePhase
 
 	protected virtual OptionProperty ParseProperty(ObjectType parentType, JsonProperty prop)
 	{
-		//Console.WriteLine($"PROPERTY {prop.Name}");
 
 		// special case
 		var propName = prop.Name;
@@ -103,16 +100,11 @@ internal abstract class BasePhase
 		{
 			if (uiControlProp.TryGetProperty("type", out var subTypeProp))
 			{
-				var subType = subTypeProp.GetString()?.ToLower();
+				var subType = subTypeProp.GetString()?.ToLowerInvariant();
 				if (subType == "enum")
 				{
-					//"uiControl": {
-					//	"default": "butt",
-					//  "options": "butt,round,square",
-					//  "type": "enum"
-					//}
-
-					// replace the 'string' type with 'enum'
+					// An enum uiControl carries a default, a comma-separated options list and a type,
+					// e.g. default 'butt' with options 'butt,round,square'. Replace 'string' with 'enum'.
 					optProp.RemoveType("string");
 					optProp.AddType("enum");
 
@@ -123,12 +115,8 @@ internal abstract class BasePhase
 				}
 				else if (subType == "color")
 				{
-					//"uiControl": {
-					//	"default": "#fff",
-					//  "type": "color"
-					// }
-
-					// replace 'string' 'object' type with 'color'
+					// A color uiControl carries a default such as '#fff' and a type of 'color'.
+					// Replace the 'string' and 'object' types with 'color'.
 					optProp.RemoveType("string");
 					optProp.RemoveType("object");
 					optProp.AddType("color");
@@ -136,7 +124,9 @@ internal abstract class BasePhase
 				else if (!string.IsNullOrWhiteSpace(subType))
 				{
 					if (subType != "text" && subType != "percent" && subType != "angle")
+					{
 						optProp.AddType(subType);
+					}
 				}
 			}
 
@@ -188,11 +178,15 @@ internal abstract class BasePhase
 	{
 		// sanity checks
 		if (optProp.Types == null || optProp.Types.Count == 0)
+		{
 			throw new ArgumentException($"JSON property '{prop.Name}' could not be mapped: no type info available");
+		}
 
 		// first try mapping enum types by name
 		if (typeCollection.TryGetMappedEnumType(prop.Name, parent.Name, out var mappedEnumType))
+		{
 			return mappedEnumType;
+		}
 
 		// matching based on types: simple first
 		if (optProp.Types.Count == 1)
@@ -295,7 +289,6 @@ internal abstract class BasePhase
 		}
 
 		Console.WriteLine($"ERROR: Failed to map property '{prop.Name}' in type '{parent.Name}' with types '{typeList}'");
-		//throw new ArgumentException($"Failed to map property '{prop.Name}' in type '{parent.Name}' with types '{string.Join(',', optProp.Types ?? Enumerable.Empty<string>())}'");
 
 		return new SimpleType("object")
 		{
@@ -330,13 +323,19 @@ internal abstract class BasePhase
 	protected virtual string GetAnyOfType(JsonElement anyOfItemElement, string postfix)
 	{
 		if (!anyOfItemElement.TryGetProperty("properties", out var propertiesItem))
+		{
 			throw new ArgumentException($"Could not determine properties element of {postfix} item");
+		}
 
 		if (!propertiesItem.TryGetProperty("type", out var typeElem))
+		{
 			throw new ArgumentException($"Could not determine type of {postfix} item");
+		}
 
 		if (!typeElem.TryGetProperty("default", out var defaultElem))
+		{
 			throw new ArgumentException($"Could not determine default type value of {postfix} item");
+		}
 
 		// for example: in transform parent --> this must resolve to TransformFilter
 		//"type": {

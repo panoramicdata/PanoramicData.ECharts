@@ -21,7 +21,9 @@ static int HandleParseError(IEnumerable<Error> errs)
 	foreach (Error err in errs)
 	{
 		if (err is HelpRequestedError || err is NoVerbSelectedError || err is HelpVerbRequestedError)
+		{
 			continue;
+		}
 
 		Console.Error.WriteLine(err);
 	}

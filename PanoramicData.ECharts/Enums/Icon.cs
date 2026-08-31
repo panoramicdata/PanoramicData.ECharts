@@ -76,7 +76,7 @@ public class IconConverter : JsonConverter<Icon>
 	{
 		if (value.Type != null)
 		{
-			writer.WriteStringValue(value.Type!.ToString()!.ToLower());
+			writer.WriteStringValue(value.Type!.ToString()!.ToLowerInvariant());
 		}
 		else if (value.Url != null)
 		{

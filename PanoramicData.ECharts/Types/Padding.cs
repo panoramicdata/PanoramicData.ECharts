@@ -58,7 +58,10 @@ public class PaddingConverter : JsonConverter<Padding>
 	/// <inheritdoc/>
 	public override void Write(Utf8JsonWriter writer, Padding value, JsonSerializerOptions options)
 	{
-		if (value.Top == value.Right && value.Top == value.Bottom && value.Top == value.Left)
+		// Exact comparison is intended: this collapses the array form to a single number only when
+		// the caller set all four sides to the identical value. A tolerance would merge genuinely
+		// distinct paddings and change the emitted options.
+		if (value.Top == value.Right && value.Top == value.Bottom && value.Top == value.Left) // NOSONAR S1244
 		{
 			writer.WriteNumberValue(value.Top);
 		}

@@ -55,7 +55,10 @@ public class BorderRadiusConverter : JsonConverter<BorderRadius>
 	/// <inheritdoc/>
 	public override void Write(Utf8JsonWriter writer, BorderRadius value, JsonSerializerOptions options)
 	{
-		if (value.UpperLeft == value.UpperRight && value.UpperLeft == value.BottomRight && value.UpperLeft == value.BottomLeft)
+		// Exact comparison is intended: this collapses the array form to a single number only when
+		// the caller set all four corners to the identical value. A tolerance would merge genuinely
+		// distinct radii and change the emitted options.
+		if (value.UpperLeft == value.UpperRight && value.UpperLeft == value.BottomRight && value.UpperLeft == value.BottomLeft) // NOSONAR S1244
 		{
 			writer.WriteNumberValue(value.UpperLeft);
 		}

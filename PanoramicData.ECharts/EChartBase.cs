@@ -457,7 +457,9 @@ public abstract class EChartBase : ComponentBase, IAsyncDisposable
 
 		// store the json opts for re-use later on
 		if (CacheJsonSerializerOptions && cachedJsonOpts == null)
+		{
 			cachedJsonOpts = jsonOpts;
+		}
 
 		return jsonOpts;
 	}

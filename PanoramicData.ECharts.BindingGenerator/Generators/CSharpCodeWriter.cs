@@ -19,7 +19,9 @@ internal sealed class CSharpCodeWriter : IDisposable
 		// check if the output directory exists
 		var dir = Path.GetDirectoryName(filename);
 		if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+		{
 			Directory.CreateDirectory(dir);
+		}
 
 		writer = new StreamWriter(filename);
 		Filename = filename;
@@ -74,7 +76,9 @@ internal sealed class CSharpCodeWriter : IDisposable
 	{
 		--indentLevel;
 		if (indentLevel < 0)
+		{
 			throw new InvalidOperationException("Indent mismatch");
+		}
 	}
 
 	public void Dispose()
@@ -127,7 +131,9 @@ internal sealed class CSharpCodeWriter : IDisposable
 		IndentMore();
 
 		foreach (var stm in statements)
+		{
 			WriteLine(stm);
+		}
 
 		CloseBrace();
 	}
@@ -141,7 +147,9 @@ internal sealed class CSharpCodeWriter : IDisposable
 	public void WriteDefaultValueAttribute(object? defaultValue)
 	{
 		if (defaultValue == null)
+		{
 			return;
+		}
 
 		if (defaultValue is string str)
 		{
@@ -149,11 +157,13 @@ internal sealed class CSharpCodeWriter : IDisposable
 		}
 		else if (defaultValue is bool b)
 		{
-			WriteLine($"[DefaultValue({b.ToString().ToLower()})]");
+			WriteLine($"[DefaultValue({b.ToString().ToLowerInvariant()})]");
 		}
 		else if (defaultValue is double d)
 		{
-			if ((d - (int)d) != 0)
+			// Exact comparison is intended: this asks whether d has any fractional part at all.
+			// A tolerance would misclassify small-but-real fractions such as 0.0001 as integers.
+			if ((d - (int)d) != 0) // NOSONAR S1244
 			{
 				// doubles with fractional part --> always write .
 				WriteLine($"[DefaultValue({d.ToString(System.Globalization.CultureInfo.InvariantCulture)})]");
@@ -173,16 +183,22 @@ internal sealed class CSharpCodeWriter : IDisposable
 	public void WriteDocumentation(string? summary)
 	{
 		if (summary == null)
+		{
 			return;
+		}
 
 		var humanReadable = GetHumanReadableText(summary);
 		if (humanReadable == null)
+		{
 			return;
+		}
 
 		WriteLine("/// <summary>");
 
 		foreach (var line in humanReadable)
+		{
 			WriteLine($"/// {line}");
+		}
 
 		WriteLine("/// </summary>");
 	}

@@ -13,7 +13,7 @@ public class LowerCaseEnumConverter<TEnum> : JsonConverter<TEnum> where TEnum : 
 	/// <inheritdoc/>
 	public override void Write(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options) =>
 		// Serialize the enum value as a lower-case string
-		writer.WriteStringValue(value.ToString()!.ToLower());
+		writer.WriteStringValue(value.ToString()!.ToLowerInvariant());
 }
 
 /// <summary>JSON converter that serializes enum values as camelCase strings.</summary>

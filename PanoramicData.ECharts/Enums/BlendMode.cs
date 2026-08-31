@@ -82,6 +82,6 @@ public class BlendModeConverter : JsonConverter<BlendMode>
 		BlendMode.DestinationIn => "destination-in",
 		BlendMode.DestinationOut => "destination-out",
 		BlendMode.DestinationAtop => "destination-atop",
-		_ => value.ToString().ToLower()
+		_ => value.ToString().ToLowerInvariant()
 	};
 }

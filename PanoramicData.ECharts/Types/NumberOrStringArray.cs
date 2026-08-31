@@ -75,7 +75,9 @@ public class NumberOrStringArrayConverter : JsonConverter<NumberOrStringArray>
 			writer.WriteStartArray();
 
 			foreach (var val in value.Values)
+			{
 				NumberOrStringConverter.Instance.Write(writer, val, options);
+			}
 
 			writer.WriteEndArray();
 		}

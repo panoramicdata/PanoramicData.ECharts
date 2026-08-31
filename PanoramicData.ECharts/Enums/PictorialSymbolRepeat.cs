@@ -73,7 +73,7 @@ public class PictorialSymbolRepeatConverter : JsonConverter<PictorialSymbolRepea
 					writer.WriteBooleanValue(false);
 					break;
 				default:
-					writer.WriteStringValue(value.RepeatType!.ToString()!.ToLower());
+					writer.WriteStringValue(value.RepeatType!.ToString()!.ToLowerInvariant());
 					break;
 			}
 		}

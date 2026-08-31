@@ -85,7 +85,9 @@ public class AutoCurvenessConverter : JsonConverter<AutoCurveness>
 		{
 			writer.WriteStartArray();
 			foreach (var val in value.Array)
+			{
 				writer.WriteNumberValue(val);
+			}
 			writer.WriteEndArray();
 		}
 	}

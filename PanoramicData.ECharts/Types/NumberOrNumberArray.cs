@@ -57,7 +57,9 @@ public class NumberOrNumberArrayConverter : JsonConverter<NumberOrNumberArray>
 		{
 			writer.WriteStartArray();
 			foreach (var val in value.Numbers)
+			{
 				writer.WriteNumberValue(val);
+			}
 			writer.WriteEndArray();
 		}
 	}

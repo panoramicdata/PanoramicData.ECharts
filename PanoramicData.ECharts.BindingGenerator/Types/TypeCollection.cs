@@ -142,7 +142,9 @@ internal class TypeCollection
 		yield return chartOptions;
 
 		foreach (var objectType in objectTypeLookup.Values)
+		{
 			yield return objectType;
+		}
 	}
 
 	public bool TryGetObjectType(string name, out ObjectType? objectType) => objectTypeLookup.TryGetValue(name, out objectType);
@@ -162,7 +164,6 @@ internal class TypeCollection
 			("edges", "SankeySeries") => new GenericListType(new SimpleType("SankeySeriesLinks")),
 			("nodes", "GraphSeries") => new GenericListType(new SimpleType("GraphSeriesData")),
 			("edges", "GraphSeries") => new GenericListType(new SimpleType("GraphSeriesLinks")),
-			//Console.WriteLine($"WARNING: array type '{prop.Name}' in '{parent.Name}' will be mapped to List<object>");
 			_ => new ObjectListType
 			{
 				TypeWarning = $"array type '{prop.Name}' in '{parent.Name}' will be mapped to List<object>"

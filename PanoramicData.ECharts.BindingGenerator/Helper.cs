@@ -14,7 +14,9 @@ internal static class Helper
 		{
 			sb.Append(char.ToUpper(word[0]));
 			if (word.Length > 1)
+			{
 				sb.Append(word[1..]);
+			}
 		}
 
 		return sb.ToString();
@@ -29,18 +31,24 @@ internal static class Helper
 			foreach (var child in value.EnumerateArray())
 			{
 				if (child.ValueKind != JsonValueKind.String)
+				{
 					throw new ArgumentException($"JSON type array element must be of type string: '{value.ValueKind}'");
+				}
 
 				var str = child.GetString();
 				if (!string.IsNullOrEmpty(str))
-					types.Add(str.ToLower());
+				{
+					types.Add(str.ToLowerInvariant());
+				}
 			}
 		}
 		else if (value.ValueKind == JsonValueKind.String)
 		{
 			var str = value.GetString();
 			if (!string.IsNullOrEmpty(str))
-				types.Add(str.ToLower());
+			{
+				types.Add(str.ToLowerInvariant());
+			}
 		}
 		else
 		{

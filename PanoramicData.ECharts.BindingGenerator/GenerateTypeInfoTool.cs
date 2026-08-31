@@ -67,7 +67,9 @@ internal class GenerateTypeInfoTool
 	{
 		var remainingIndices = new List<int>(list.Count);
 		for (int i = 0; i < list.Count; ++i)
+		{
 			remainingIndices.Add(i);
+		}
 
 		var similarCount = new List<int>();
 
