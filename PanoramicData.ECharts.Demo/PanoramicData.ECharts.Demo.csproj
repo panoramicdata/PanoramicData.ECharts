@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageId>PanoramicData.ECharts.Demo</PackageId>
     <RepositoryUrl>https://github.com/panoramicdata/PanoramicData.ECharts</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/panoramicdata/PanoramicData.ECharts</PackageProjectUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
