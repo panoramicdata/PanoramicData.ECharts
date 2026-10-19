@@ -10,7 +10,9 @@
     <PackageProjectUrl>https://github.com/panoramicdata/PanoramicData.ECharts</PackageProjectUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <!-- Sample pages used by the Demo app, not a library: never publish it to NuGet. -->
+    <IsPackable>false</IsPackable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralResourcesLanguage>en</NeutralResourcesLanguage>
     <PackageReadmeFile>README.md</PackageReadmeFile>
