@@ -30,4 +30,75 @@ public class EChartOptionsUpdateTests : BunitContext
 		});
 		JSInterop.Invocations["panoramicDataECharts.initChart"].Should().ContainSingle();
 	}
+
+	/// <summary>Verifies that changes made in place to the same Options instance while initChart is pending are drawn once it completes.</summary>
+	[Fact]
+	public async Task OptionsMutatedInPlaceDuringInit_AreDrawnAfterInitCompletes()
+	{
+		JSInterop.Mode = JSRuntimeMode.Loose;
+		var init = JSInterop.SetupVoid("panoramicDataECharts.initChart", _ => true);
+
+		var options = new ChartOptions { Title = new() { Text = "initial-title" } };
+
+		var cut = Render<EChart>(p => p.Add(c => c.Options, options));
+
+		// the parent changes the instance it already passed, then re-renders
+		options.Title.Text = "mutated-title";
+		cut.Render(p => p.Add(c => c.Options, options));
+		await cut.InvokeAsync(init.SetVoidResult);
+
+		cut.WaitForAssertion(() =>
+		{
+			var updates = JSInterop.Invocations["panoramicDataECharts.updateChart"];
+			updates.Should().ContainSingle();
+			((string)updates[0].Arguments[1]!).Should().Contain("mutated-title");
+		});
+		JSInterop.Invocations["panoramicDataECharts.initChart"].Should().ContainSingle();
+	}
+
+	/// <summary>Verifies that with a DataLoader, changes made in place while the initial updateChart is pending are drawn once it completes.</summary>
+	[Fact]
+	public async Task OptionsMutatedInPlaceDuringDataLoaderInit_AreDrawnAfterInitCompletes()
+	{
+		JSInterop.Mode = JSRuntimeMode.Loose;
+		var update = JSInterop.SetupVoid("panoramicDataECharts.updateChart", _ => true);
+
+		var options = new ChartOptions { Title = new() { Text = "initial-title" } };
+
+		var cut = Render<EChart>(p => p
+			.Add(c => c.Options, options)
+			.Add(c => c.DataLoader, () => { }));
+
+		// the data has been loaded and drawn, but that updateChart is still pending
+		JSInterop.Invocations["panoramicDataECharts.updateChart"].Should().ContainSingle();
+		options.Title.Text = "mutated-title";
+		cut.Render(p => p.Add(c => c.Options, options));
+		await cut.InvokeAsync(update.SetVoidResult);
+
+		cut.WaitForAssertion(() =>
+		{
+			var updates = JSInterop.Invocations["panoramicDataECharts.updateChart"];
+			updates.Should().HaveCount(2);
+			((string)updates[1].Arguments[1]!).Should().Contain("mutated-title");
+		});
+		JSInterop.Invocations["panoramicDataECharts.initChart"].Should().ContainSingle();
+	}
+
+	/// <summary>Verifies that when Options did not change during init, no extra updateChart call is made.</summary>
+	[Fact]
+	public async Task OptionsUnchangedDuringInit_AreNotRedrawn()
+	{
+		JSInterop.Mode = JSRuntimeMode.Loose;
+		var init = JSInterop.SetupVoid("panoramicDataECharts.initChart", _ => true);
+
+		var options = new ChartOptions { Title = new() { Text = "initial-title" } };
+
+		var cut = Render<EChart>(p => p.Add(c => c.Options, options));
+
+		cut.Render(p => p.Add(c => c.Options, options));
+		await cut.InvokeAsync(init.SetVoidResult);
+
+		JSInterop.Invocations["panoramicDataECharts.initChart"].Should().ContainSingle();
+		JSInterop.Invocations["panoramicDataECharts.updateChart"].Should().BeEmpty();
+	}
 }

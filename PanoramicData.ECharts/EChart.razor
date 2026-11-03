@@ -58,6 +58,9 @@
 
 		var initOptions = JsonSerializer.Serialize(initOptionsDict);
 
+		// the chart options JSON actually drawn during init
+		string? drawnChartOpts = null;
+
 		_chartInitializing = true;
 		try
 		{
@@ -78,8 +81,8 @@
 				}
 
 				// serialize all required data
-				_previousOptions = Options;
 				(var chartOpts, var mapOpts, var fetchOpts) = Serialize(serializeMapOpts: true);
+				drawnChartOpts = chartOpts;
 
 				// update the chart
 				await JSRuntime.InvokeVoidAsync("panoramicDataECharts.updateChart", Id, chartOpts, mapOpts, fetchOpts);
@@ -87,8 +90,8 @@
 			else
 			{
 				// serialize all required data
-				_previousOptions = Options;
 				(var chartOpts, var mapOpts, var fetchOpts) = Serialize(serializeMapOpts: true);
+				drawnChartOpts = chartOpts;
 
 				//TODO: also pass DotNetObjectReference.Create(this) ?
 				await JSRuntime.InvokeVoidAsync("panoramicDataECharts.initChart", Id, Theme, initOptions, chartOpts, mapOpts, fetchOpts);
@@ -109,10 +112,16 @@
 			_chartInitializing = false;
 		}
 
-		// OnParametersSetAsync ignores Options changes until initialized, so draw any that arrived during init
-		if (_chartInitialized && Options != _previousOptions)
+		if (!_chartInitialized)
 		{
-			_previousOptions = Options;
+			return;
+		}
+
+		// OnParametersSetAsync ignores Options changes until initialized, so draw any that arrived during init,
+		// whether Options was replaced or the same instance was changed in place
+		_previousOptions = Options;
+		if (Serialize(serializeMapOpts: false).chartOpts != drawnChartOpts)
+		{
 			await UpdateAsync(false);
 		}
 	}
