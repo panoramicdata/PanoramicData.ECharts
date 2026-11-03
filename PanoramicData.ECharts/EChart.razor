@@ -10,12 +10,15 @@
 @code {
 
 	private bool _chartInitialized = false;
+	private bool _chartInitializing = false;
 	private ChartOptions? _previousOptions;
 
 	protected override async Task OnParametersSetAsync()
 	{
 		if (!_chartInitialized || Options == _previousOptions)
+		{
 			return;
+		}
 
 		_previousOptions = Options;
 		await UpdateAsync(false);
@@ -23,12 +26,16 @@
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		// Skip if chart is already initialized
-		if (_chartInitialized)
+		// Skip if chart is already initialized, or a re-render arrived while initChart is in flight
+		if (_chartInitialized || _chartInitializing)
+		{
 			return;
+		}
 
 		if (Options == null)
+		{
 			throw new ArgumentException("Options property must be set");
+		}
 
 		// init the serializer options if required
 		jsonOpts ??= CreateSerializerOptions();
@@ -39,10 +46,19 @@
 		// omit width/height when unset — passing null or "auto" causes SVG attribute errors;
 		// ECharts will auto-detect from container CSS when the properties are absent
 		var initOptionsDict = new Dictionary<string, object> { { "renderer", Renderer.ToJsParam() } };
-		if (Width is not null) initOptionsDict["width"] = Width;
-		if (Height is not null) initOptionsDict["height"] = Height;
+		if (Width is not null)
+		{
+			initOptionsDict["width"] = Width;
+		}
+
+		if (Height is not null)
+		{
+			initOptionsDict["height"] = Height;
+		}
+
 		var initOptions = JsonSerializer.Serialize(initOptionsDict);
 
+		_chartInitializing = true;
 		try
 		{
 #if DEBUG
@@ -62,6 +78,7 @@
 				}
 
 				// serialize all required data
+				_previousOptions = Options;
 				(var chartOpts, var mapOpts, var fetchOpts) = Serialize(serializeMapOpts: true);
 
 				// update the chart
@@ -70,6 +87,7 @@
 			else
 			{
 				// serialize all required data
+				_previousOptions = Options;
 				(var chartOpts, var mapOpts, var fetchOpts) = Serialize(serializeMapOpts: true);
 
 				//TODO: also pass DotNetObjectReference.Create(this) ?
@@ -85,6 +103,17 @@
 			// The component will render again after the SignalR connection is established
 			// and JavaScript will be available at that time. Don't set _chartInitialized
 			// so we can try again on the next render.
+		}
+		finally
+		{
+			_chartInitializing = false;
+		}
+
+		// OnParametersSetAsync ignores Options changes until initialized, so draw any that arrived during init
+		if (_chartInitialized && Options != _previousOptions)
+		{
+			_previousOptions = Options;
+			await UpdateAsync(false);
 		}
 	}
 

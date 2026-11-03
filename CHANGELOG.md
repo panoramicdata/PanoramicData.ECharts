@@ -14,6 +14,12 @@ released, since nothing in the pipeline generates one.
 
 ### Fixed
 
+- **Options set during chart initialisation are no longer lost.** `EChart` ignored `Options` changes
+  until its first `initChart` call completed, so a page that rebuilt its options right after the first
+  render (for example after reading the theme in `OnAfterRenderAsync`) kept the stale chart until some
+  later parameter change arrived. A re-render during initialisation also started a second `initChart`.
+  Initialisation now runs once, records the options it drew, and redraws once with `updateChart` if
+  `Options` changed while it was in flight. Covered by a new bUnit test.
 - **Gauge sample no longer terminates the demo host.** `TempGaugeChart` passed an async lambda to
   `Timer`. Because `TimerCallback` returns `void`, that compiled as `async void`, so once the Blazor
   circuit was disposed the next tick called JS interop on a dead circuit and the resulting
