@@ -95,7 +95,6 @@ window.panoramicDataECharts = {
       chart.__dataSources.push(item.id);
     }
   },
-
   registerMaps: function (chart, mapOptions) {
     if (mapOptions == null) return;
 
@@ -116,7 +115,6 @@ window.panoramicDataECharts = {
       }
     }
   },
-
   initChart: async function (
     id,
     theme,
@@ -163,7 +161,6 @@ window.panoramicDataECharts = {
     // hide the loading animation immediately
     chart.hideLoading();
   },
-
   updateChart: async function (id, chartOptions, mapOptions, fetchOptions) {
     var chart = panoramicDataECharts.charts.get(id);
     if (chart == null) {
@@ -189,7 +186,6 @@ window.panoramicDataECharts = {
     // hide the loading animation
     chart.hideLoading();
   },
-
   clearChart: function (id) {
     var chart = panoramicDataECharts.charts.get(id);
     if (chart == null) {
@@ -199,7 +195,6 @@ window.panoramicDataECharts = {
 
     chart.clear();
   },
-
   disposeChart: function (id) {
     var chart = panoramicDataECharts.charts.get(id);
     if (chart == null) {
