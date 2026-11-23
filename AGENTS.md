@@ -3,7 +3,8 @@
 ## Glossary
 
 - NET: .NET, Microsoft's developer platform; this is a product name.
-- MVC: Model-View-Controller, an ASP.NET web pattern.
+- MVC: Model-View-Controller, a web application pattern.
+- ASP: Active Server Pages, as in ASP.NET.
 
 ## Identity
 
