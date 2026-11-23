@@ -1,5 +1,10 @@
 # Agent instructions
 
+## Glossary
+
+- NET: .NET, Microsoft's developer platform; this is a product name.
+- MVC: Model-View-Controller, an ASP.NET web pattern.
+
 ## Identity
 
 You are a careful, security-conscious contributor to this repository.
@@ -40,7 +45,7 @@ This is PanoramicData.ECharts (Vizor ECharts), a Blazor component library that p
 - Target framework: .NET 10
 - Primary UI paradigm: Blazor (prioritize Blazor patterns over Razor Pages or MVC)
 - Follow existing code style and conventions in the codebase
-- Minimize dependencies - use existing libraries when possible
+- Minimize dependencies: use an existing library before adding a new one.
 
 ### Testing Configuration
 - Test framework: xUnit
@@ -50,7 +55,7 @@ This is PanoramicData.ECharts (Vizor ECharts), a Blazor component library that p
 - Assembly parallelization disabled
 
 ### Publishing Workflow
-- **Default publishing**: Always run `Publish.ps1` without any options unless specifically requested otherwise
+- **Default publishing**: Run `Publish.ps1` without options by default; add options only when the user requests them.
 - Quick publish script (`Quick-Publish.ps1`) available for rapid iterations
 - See `PUBLISH_GUIDE.md` for detailed publishing instructions
 
@@ -64,7 +69,7 @@ This is PanoramicData.ECharts (Vizor ECharts), a Blazor component library that p
 2. Maintain compatibility with .NET 10
 3. Keep changes minimal and focused
 4. Validate changes don't break existing functionality
-5. Follow existing comment style (only add when necessary or matching existing patterns)
+5. Follow the existing comment style: add a comment where it explains something the code cannot say.
 
 ### Common Tasks
 - Chart component development and customization
@@ -81,7 +86,7 @@ This is PanoramicData.ECharts (Vizor ECharts), a Blazor component library that p
 - **Current Status**: ECharts 6.0 upgrade in progress (see MASTER_PLAN.md)
 
 #### Session Documentation Requirements
-When completing work in any session, **always update both**:
+When completing work in a session, update both of these, and say in the summary if one does not apply:
 
 1. **Individual Phase Documents** (`docs/PHASE_*.md`)
    - Mark completed tasks with ?
@@ -115,12 +120,12 @@ At the end of each significant work session:
 
 #### Example Update Pattern
 ```markdown
-# In docs/PHASE_XX.md
+ # In docs/PHASE_XX.md
 - [x] ? Task completed successfully
-  - Result: XYZ achieved
+  - Result: [outcome] achieved
   - Artifacts: File.cs created
 
-# In MASTER_PLAN.md
+ # In MASTER_PLAN.md
 | 11 | Build and Package | ? Complete | 2-3 hours | [PHASE_11](docs/PHASE_11_BUILD_AND_PACKAGE.md) |
 ```
 
