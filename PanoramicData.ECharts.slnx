@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Solution>
   <Folder Name="/Project Planning/">
     <File Path="docs/PHASE_01_PRE_UPDATE_ASSESSMENT.md" />
@@ -21,7 +21,6 @@
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
-    <File Path=".github/copilot-instructions.md" />
     <File Path=".gitignore" />
     <File Path="global.json" />
     <File Path="LICENSE" />
