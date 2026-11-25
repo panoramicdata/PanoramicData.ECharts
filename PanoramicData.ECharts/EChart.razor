@@ -136,6 +136,17 @@
 		// serialize all required data
 		(var chartOpts, var mapOpts, var fetchOpts) = Serialize(serializeMapOpts: false);
 
-		await JSRuntime.InvokeVoidAsync("panoramicDataECharts.updateChart", Id, chartOpts, mapOpts, fetchOpts);
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("panoramicDataECharts.updateChart", Id, chartOpts, mapOpts, fetchOpts);
+		}
+		catch (JSDisconnectedException)
+		{
+			// the circuit has gone, so there is no browser chart left to update
+		}
+		catch (Exception ex) when (ex is ObjectDisposedException or OperationCanceledException)
+		{
+			// the component or its runtime was disposed while the update was in flight
+		}
 	}
 }

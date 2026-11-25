@@ -1,5 +1,6 @@
 using AwesomeAssertions;
 using Bunit;
+using Microsoft.JSInterop;
 
 namespace PanoramicData.ECharts.Test;
 
@@ -100,5 +101,57 @@ public class EChartOptionsUpdateTests : BunitContext
 
 		JSInterop.Invocations["panoramicDataECharts.initChart"].Should().ContainSingle();
 		JSInterop.Invocations["panoramicDataECharts.updateChart"].Should().BeEmpty();
+	}
+
+	/// <summary>Verifies that UpdateAsync swallows a JS disconnect, since there is no browser chart left to update.</summary>
+	[Fact]
+	public async Task UpdateAsync_WhenCircuitDisconnected_DoesNotThrow()
+	{
+		await AssertUpdateAsyncSwallows(new JSDisconnectedException("disconnected"));
+	}
+
+	/// <summary>Verifies that UpdateAsync swallows an operation cancelled while the update was in flight.</summary>
+	[Fact]
+	public async Task UpdateAsync_WhenCancelled_DoesNotThrow()
+	{
+		await AssertUpdateAsyncSwallows(new TaskCanceledException());
+	}
+
+	/// <summary>Verifies that UpdateAsync swallows a disposed runtime.</summary>
+	[Fact]
+	public async Task UpdateAsync_WhenDisposed_DoesNotThrow()
+	{
+		await AssertUpdateAsyncSwallows(new ObjectDisposedException("runtime"));
+	}
+
+	/// <summary>Verifies that UpdateAsync still surfaces a genuine JavaScript error.</summary>
+	[Fact]
+	public async Task UpdateAsync_WhenJavaScriptFails_Throws()
+	{
+		var (cut, update) = await RenderInitialisedAsync();
+		update.SetException(new JSException("boom"));
+
+		var act = () => cut.InvokeAsync(() => cut.Instance.UpdateAsync(false));
+
+		await act.Should().ThrowAsync<JSException>();
+	}
+
+	private async Task AssertUpdateAsyncSwallows(Exception exception)
+	{
+		var (cut, update) = await RenderInitialisedAsync();
+		update.SetException(exception);
+
+		var act = () => cut.InvokeAsync(() => cut.Instance.UpdateAsync(false));
+
+		await act.Should().NotThrowAsync();
+	}
+
+	private async Task<(IRenderedComponent<EChart> Cut, JSRuntimeInvocationHandler Update)> RenderInitialisedAsync()
+	{
+		JSInterop.Mode = JSRuntimeMode.Loose;
+		var update = JSInterop.SetupVoid("panoramicDataECharts.updateChart", _ => true);
+		var cut = Render<EChart>(p => p.Add(c => c.Options, new ChartOptions { Title = new() { Text = "t" } }));
+		await cut.WaitForStateAsync(() => JSInterop.Invocations["panoramicDataECharts.initChart"].Count > 0);
+		return (cut, update);
 	}
 }
