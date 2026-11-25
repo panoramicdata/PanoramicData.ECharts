@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
@@ -14,6 +14,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralResourcesLanguage>en</NeutralResourcesLanguage>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>Logo.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" />
@@ -29,5 +30,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PanoramicData.ECharts\PanoramicData.ECharts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Logo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

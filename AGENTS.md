@@ -30,7 +30,7 @@ You are a careful, security-conscious contributor to this repository.
 This is PanoramicData.ECharts (Vizor ECharts), a Blazor component library that provides ECharts integration for .NET applications.
 
 ### Technology Stack
-- **Framework**: .NET 10
+- **Framework**: .NET 11.0
 - **UI Framework**: Blazor
 - **Charting Library**: Apache ECharts (JavaScript interop)
 
@@ -43,7 +43,7 @@ This is PanoramicData.ECharts (Vizor ECharts), a Blazor component library that p
 - `PanoramicData.ECharts.BindingGenerator` - Code generation utilities
 
 ### Coding Conventions
-- Target framework: .NET 10
+- Target framework: .NET 11.0
 - Primary UI paradigm: Blazor (prioritize Blazor patterns over Razor Pages or MVC)
 - Follow existing code style and conventions in the codebase
 - Minimize dependencies: use an existing library before adding a new one.
@@ -67,7 +67,7 @@ This is PanoramicData.ECharts (Vizor ECharts), a Blazor component library that p
 
 ### Development Guidelines
 1. Prioritize Blazor-specific solutions and patterns
-2. Maintain compatibility with .NET 10
+2. Maintain compatibility with .NET 11.0
 3. Keep changes minimal and focused
 4. Validate changes don't break existing functionality
 5. Follow the existing comment style: add a comment where it explains something the code cannot say.

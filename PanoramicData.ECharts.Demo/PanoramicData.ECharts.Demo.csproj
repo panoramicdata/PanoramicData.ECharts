@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageId>PanoramicData.ECharts.Demo</PackageId>
@@ -13,6 +13,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralResourcesLanguage>en</NeutralResourcesLanguage>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>Logo.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PanoramicData.ECharts.Samples\PanoramicData.ECharts.Samples.csproj" />
@@ -20,5 +21,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\css\site.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Logo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

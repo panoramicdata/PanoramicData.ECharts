@@ -7,11 +7,15 @@
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/563d18517c424783814728f76d8aca6f)](https://app.codacy.com/gh/panoramicdata/PanoramicData.ECharts/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
+> **Need help with APIs or .NET?** Panoramic Data are experts in APIs and .NET, and we can help with your development. [Contact us](https://www.panoramicdata.com/contact-us) or see our [software services](https://www.panoramicdata.com/services/software).
+
+Supports .NET 11.0.
+
 A comprehensive Blazor wrapper for [Apache ECharts](https://echarts.apache.org/en/index.html), providing type-safe C# bindings for creating interactive data visualizations in Blazor applications.
 
 ## Features
 
-- **Full .NET Support**: Compatible with .NET 10.0
+- **Full .NET Support**: Compatible with .NET 11.0
 - **Latest ECharts**: Ships with Apache ECharts 6.0.0
 - **Type-Safe Bindings**: Strong typing throughout the API
 - **Open Source**: Apache-2.0 licensed (same as Apache ECharts)
