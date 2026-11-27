@@ -50,202 +50,208 @@ var yo={},mo={};var xo,_o=function(){function t(t,e,n){var i=this;this._sleepAft
  * JavaScript interop layer
  */
 window.panoramicDataECharts = {
+  charts: new Map(),
+  dataSources: new Map(),
+  logging: false,
+  changeLogging: function (b) {
+    panoramicDataECharts.logging = b;
+  },
+  getChart: function (id) {
+    return panoramicDataECharts.charts.get(id);
+  },
+  getDataSource: function (fetchId) {
+    var data = panoramicDataECharts.dataSources.get(fetchId);
 
-	charts: new Map(),
-	dataSources: new Map(),
+    if (panoramicDataECharts.logging) {
+      console.log(`GET CACHED FETCH ${fetchId}`);
+      console.log(data);
+    }
 
-	logging: false,
+    return data;
+  },
+  evaluatePath: function (data, pathExpression) {
+    const pathSegments = pathExpression.split(".");
+    const blockedKeys = ["__proto__", "constructor", "prototype"];
 
-	changeLogging: function (b) {
-		panoramicDataECharts.logging = b;
-	},
+    // Own properties only, never prototype keys; returns undefined when not found.
+    return pathSegments.reduce((obj, segment) => {
+      if (
+        obj === undefined ||
+        blockedKeys.includes(segment) ||
+        !Object.prototype.hasOwnProperty.call(obj, segment)
+      ) {
+        return undefined;
+      }
+      return obj[segment];
+    }, data);
+  },
+  fetchExternalData: async function (chart, fetchOptions) {
+    if (fetchOptions == null) return;
 
-	getChart: function (id) {
-		return panoramicDataECharts.charts.get(id);
-	},
+    chart.__dataSources = [];
 
-	getDataSource: function (fetchId) {
-		var data = panoramicDataECharts.dataSources.get(fetchId);
+    for (item of JSON.parse(fetchOptions)) {
+      if (panoramicDataECharts.logging) {
+        console.log(`FETCH ${item.id}`);
+        console.log(item);
+      }
 
-		if (panoramicDataECharts.logging) {
-			console.log(`GET CACHED FETCH ${fetchId}`);
-			console.log(data);
-		}
+      const response = await fetch(item.url, item.options);
+      if (!response.ok) {
+        throw new Error("Failed to fetch external chart data: url=" + url);
+      }
 
-		return data;
-	},
+      // parse the response as JSON
+      var data = null;
+      if (item.fetchAs == "json") {
+        data = await response.json();
 
-	evaluatePath: function (data, pathExpression) {
-		const pathSegments = pathExpression.split('.');
-		let currentObj = data;
+        // replace the object with the fetched data
+        if (item.path != null) {
+          try {
+            data = panoramicDataECharts.evaluatePath(data, item.path);
+          } catch (error) {
+            console.log(
+              "Failed to evaluate path expression of external data source",
+            );
+            console.log(error);
+          }
+        }
+      } else if (item.fetchAs == "string") {
+        data = await response.text();
+      }
 
-		for (const segment of pathSegments) {
-			if (!currentObj.hasOwnProperty(segment)) {
-				return undefined; // Property not found, return undefined
-			}
-			currentObj = currentObj[segment];
-		}
+      if (panoramicDataECharts.logging) {
+        console.log(data);
+      }
 
-		return currentObj;
-	},
+      // execute the afterLoad function if required
+      if (item.afterLoad != null) {
+        try {
+          const func = eval(`(${item.afterLoad})`);
+          data = func(data);
+        } catch (error) {
+          console.log(
+            "Failed to execute afterLoad function of external data source",
+          );
+          console.log(error);
+        }
+      }
 
-	fetchExternalData: async function (chart, fetchOptions) {
-		if (fetchOptions == null)
-			return;
+      // store in the datasources map for later retrieval
+      window.panoramicDataECharts.dataSources.set(item.id, data);
 
-		chart.__dataSources = [];
+      // add reference inside the chart, so we can cleanup later
+      chart.__dataSources.push(item.id);
+    }
+  },
+  registerMaps: function (chart, mapOptions) {
+    if (mapOptions == null) return;
 
-		for (item of JSON.parse(fetchOptions)) {
-			if (panoramicDataECharts.logging) {
-				console.log(`FETCH ${item.id}`);
-				console.log(item);
-			}
+    var parsedOptions = eval("(" + mapOptions + ")");
+    for (item of parsedOptions) {
+      if (panoramicDataECharts.logging) {
+        console.log("MAP");
+        console.log(item);
+      }
 
-			const response = await fetch(item.url, item.options);
-			if (!response.ok) {
-				throw new Error('Failed to fetch external chart data: url=' + url);
-			}
+      if (item.type === "geoJSON") {
+        echarts.registerMap(item.mapName, {
+          geoJSON: item.geoJSON,
+          specialAreas: item.specialAreas,
+        });
+      } else if (item.type === "svg") {
+        echarts.registerMap(item.mapName, { svg: item.svg });
+      }
+    }
+  },
+  initChart: async function (
+    id,
+    theme,
+    initOptions,
+    chartOptions,
+    mapOptions,
+    fetchOptions,
+  ) {
+    var chart = echarts.init(
+      document.getElementById(id),
+      theme,
+      JSON.parse(initOptions),
+    );
+    panoramicDataECharts.charts.set(id, chart);
 
-			// parse the response as JSON
-			var data = null;
-			if (item.fetchAs == "json") {
-				data = await response.json();
+    // show loading animation
+    chart.showLoading();
 
-				// replace the object with the fetched data
-				if (item.path != null) {
-					try {
-						data = panoramicDataECharts.evaluatePath(data, item.path);
-					} catch (error) {
-						console.log('Failed to evaluate path expression of external data source');
-						console.log(error);
-					}
-				}
-			} else if (item.fetchAs == "string") {
-				data = await response.text();
-			}
+    if (chartOptions == null) return;
 
-			if (panoramicDataECharts.logging) {
-				console.log(data);
-			}
+    // fetch external data if needed
+    await panoramicDataECharts.fetchExternalData(chart, fetchOptions);
 
-			// execute the afterLoad function if required
-			if (item.afterLoad != null) {
-				try {
-					const func = eval(`(${item.afterLoad})`)
-					data = func(data);
-				} catch (error) {
-					console.log('Failed to execute afterLoad function of external data source');
-					console.log(error);
-				}
-			}
+    // register GEO maps
+    await panoramicDataECharts.registerMaps(chart, mapOptions);
 
-			// store in the datasources map for later retrieval
-			window.panoramicDataECharts.dataSources.set(item.id, data);
+    // parse the options
+    var parsedOptions = eval("(" + chartOptions + ")");
 
-			// add reference inside the chart, so we can cleanup later
-			chart.__dataSources.push(item.id);
-		}
-	},
+    if (panoramicDataECharts.logging) {
+      console.log("CHART");
+      console.log(parsedOptions);
+    }
 
-	registerMaps: function (chart, mapOptions) {
-		if (mapOptions == null)
-			return;
+    // set the chart options
+    chart.setOption(parsedOptions);
 
-		var parsedOptions = eval('(' + mapOptions + ')');
-		for (item of parsedOptions) {
-			if (panoramicDataECharts.logging) {
-				console.log("MAP");
-				console.log(item);
-			}
+    // hide the loading animation immediately
+    chart.hideLoading();
+  },
+  updateChart: async function (id, chartOptions, mapOptions, fetchOptions) {
+    var chart = panoramicDataECharts.charts.get(id);
+    if (chart == null) {
+      console.error("Failed to retrieve chart " + id);
+      return;
+    }
 
-			if (item.type === "geoJSON") {
-				echarts.registerMap(item.mapName, { geoJSON: item.geoJSON, specialAreas: item.specialAreas });
-			} else if (item.type === "svg") {
-				echarts.registerMap(item.mapName, { svg: item.svg });
-			}
-		}
-	},
+    // fetch external data if needed
+    await panoramicDataECharts.fetchExternalData(chart, fetchOptions);
 
-	initChart: async function (id, theme, initOptions, chartOptions, mapOptions, fetchOptions) {
-		var chart = echarts.init(document.getElementById(id), theme, JSON.parse(initOptions));
-		panoramicDataECharts.charts.set(id, chart);
+    // register GEO maps
+    await panoramicDataECharts.registerMaps(chart, mapOptions);
 
-		// show loading animation
-		chart.showLoading();
+    // parse the options
+    var parsedOptions = eval("(" + chartOptions + ")");
 
-		if (chartOptions == null)
-			return;
+    // iterate through the options and map all JS functions / external data sources
+    // set the chart options
+    chart.setOption(parsedOptions);
 
-		// fetch external data if needed
-		await panoramicDataECharts.fetchExternalData(chart, fetchOptions);
+    // hide the loading animation
+    chart.hideLoading();
+  },
+  clearChart: function (id) {
+    var chart = panoramicDataECharts.charts.get(id);
+    if (chart == null) {
+      console.error("Failed to clear chart " + id);
+      return;
+    }
 
-		// register GEO maps
-		await panoramicDataECharts.registerMaps(chart, mapOptions);
+    chart.clear();
+  },
+  disposeChart: function (id) {
+    var chart = panoramicDataECharts.charts.get(id);
+    if (chart == null) {
+      console.error("Failed to dispose chart " + id);
+      return;
+    }
 
-		// parse the options
-		var parsedOptions = eval('(' + chartOptions + ')');
+    // dispose of all dataSources linked to the chart
+    if (chart.__dataSources && Array.isArray(chart.__dataSources)) {
+      chart.__dataSources.forEach((id) => {
+        window.panoramicDataECharts.dataSources.delete(id);
+      });
+    }
 
-		if (panoramicDataECharts.logging) {
-			console.log("CHART");
-			console.log(parsedOptions);
-		}
-
-		// set the chart options
-		chart.setOption(parsedOptions);
-
-		// hide the loading animation immediately
-		chart.hideLoading();
-	},
-
-	updateChart: async function (id, chartOptions, mapOptions, fetchOptions) {
-		var chart = panoramicDataECharts.charts.get(id);
-		if (chart == null) {
-			console.error("Failed to retrieve chart " + id);
-			return;
-		}
-
-		// fetch external data if needed
-		await panoramicDataECharts.fetchExternalData(chart, fetchOptions);
-
-		// register GEO maps
-		await panoramicDataECharts.registerMaps(chart, mapOptions);
-
-		// parse the options
-		var parsedOptions = eval('(' + chartOptions + ')');
-
-		// iterate through the options and map all JS functions / external data sources
-		// set the chart options
-		chart.setOption(parsedOptions);
-
-		// hide the loading animation
-		chart.hideLoading();
-	},
-
-	clearChart: function (id) {
-		var chart = panoramicDataECharts.charts.get(id);
-		if (chart == null) {
-			console.error("Failed to clear chart " + id);
-			return;
-		}
-
-		chart.clear();
-	},
-
-	disposeChart: function (id) {
-		var chart = panoramicDataECharts.charts.get(id);
-		if (chart == null) {
-			console.error("Failed to dispose chart " + id);
-			return;
-		}
-
-		// dispose of all dataSources linked to the chart
-		if (chart.__dataSources && Array.isArray(chart.__dataSources)) {
-			chart.__dataSources.forEach(id => {
-				window.panoramicDataECharts.dataSources.delete(id);
-			});
-		}
-
-		echarts.dispose(chart)
-		panoramicDataECharts.charts.delete(id);
-	}
+    echarts.dispose(chart);
+    panoramicDataECharts.charts.delete(id);
+  },
 };

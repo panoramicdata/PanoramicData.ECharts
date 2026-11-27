@@ -304,7 +304,10 @@ public abstract class EChartBase : ComponentBase, IAsyncDisposable
 
 			await JSRuntime.InvokeVoidAsync("panoramicDataECharts.disposeChart", Id);
 		}
-		catch { }
+		catch
+		{
+			// Best-effort cleanup: the JS runtime or circuit may already be gone during disposal, and DisposeAsync must not throw.
+		}
 	}
 
 	/// <summary>

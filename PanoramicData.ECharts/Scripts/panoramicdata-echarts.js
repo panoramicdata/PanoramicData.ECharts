@@ -24,16 +24,19 @@ window.panoramicDataECharts = {
   },
   evaluatePath: function (data, pathExpression) {
     const pathSegments = pathExpression.split(".");
-    let currentObj = data;
+    const blockedKeys = ["__proto__", "constructor", "prototype"];
 
-    for (const segment of pathSegments) {
-      if (!currentObj.hasOwnProperty(segment)) {
-        return undefined; // Property not found, return undefined
+    // Own properties only, never prototype keys; returns undefined when not found.
+    return pathSegments.reduce((obj, segment) => {
+      if (
+        obj === undefined ||
+        blockedKeys.includes(segment) ||
+        !Object.prototype.hasOwnProperty.call(obj, segment)
+      ) {
+        return undefined;
       }
-      currentObj = currentObj[segment];
-    }
-
-    return currentObj;
+      return obj[segment];
+    }, data);
   },
   fetchExternalData: async function (chart, fetchOptions) {
     if (fetchOptions == null) return;
