@@ -253,12 +253,10 @@ public class ColorConverter : JsonConverter<Color>
 			writer.WriteNumber("r", rg.R);
 		}
 
+		// [] and false match what the echarts.graphic gradient classes substitute for null, and stop setOption merging stale values.
 		writer.WritePropertyName("colorStops");
-		JsonSerializer.Serialize(writer, gradient.ColorStops, options);
-		if (gradient.Global.HasValue)
-		{
-			writer.WriteBoolean("global", gradient.Global.Value);
-		}
+		JsonSerializer.Serialize(writer, gradient.ColorStops ?? [], options);
+		writer.WriteBoolean("global", gradient.Global ?? false);
 
 		writer.WriteEndObject();
 	}

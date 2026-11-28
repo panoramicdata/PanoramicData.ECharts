@@ -92,7 +92,23 @@ public class EvalFreeSerializationTests : BunitContext
 		color.GetProperty("type").GetString().Should().Be("linear");
 		color.GetProperty("y2").GetDouble().Should().Be(1);
 		color.GetProperty("colorStops")[1].GetProperty("color").GetString().Should().Be("#188df0");
-		color.TryGetProperty("global", out _).Should().BeFalse();
+		color.GetProperty("global").GetBoolean().Should().BeFalse();
+	}
+
+	/// <summary>Verifies that a gradient without colour stops writes an empty array, which the SVG renderer needs.</summary>
+	[Fact]
+	public void RadialGradient_WithoutColorStops_WritesEmptyArray()
+	{
+		var options = new ChartOptions
+		{
+			Series = [new BarSeries { ItemStyle = new() { Color = new RadialGradient(0.5, 0.5, 0.5) } }]
+		};
+
+		var (json, _) = RenderAndCaptureInit(options);
+
+		var color = json.RootElement.GetProperty("series")[0].GetProperty("itemStyle").GetProperty("color");
+		color.GetProperty("type").GetString().Should().Be("radial");
+		color.GetProperty("colorStops").GetArrayLength().Should().Be(0);
 	}
 
 	/// <summary>Verifies that a registered function needs a name.</summary>

@@ -216,11 +216,12 @@ options.Dataset = new Dataset
 Formatters and other callbacks are JavaScript functions you register in the browser by name, then reference from C#.
 No JavaScript source is sent from .NET or evaluated, so the package needs no `'unsafe-eval'` in your Content Security Policy.
 
-Register the functions in a static script loaded after the PanoramicData.ECharts scripts:
+Register the functions in a static script loaded after the PanoramicData.ECharts scripts and before the Blazor script:
 
 ```html
 <script src="_content/PanoramicData.ECharts/js/panoramicdata-echarts-bundle-min.js"></script>
 <script src="js/chart-functions.js"></script>
+<script src="_framework/blazor.web.js"></script>
 ```
 
 ```javascript
@@ -234,13 +235,12 @@ panoramicDataECharts.registerFunction("halfDoughnutLabel", function (param) {
 Formatter = JavascriptFunction.Registered("halfDoughnutLabel")
 ```
 
-A name that has not been registered stops the chart from rendering and logs the missing name to the browser console.
-Values that used to be JavaScript expressions (for example data computed in the browser) should be computed in .NET.
+Functions are looked up when ECharts calls them. Calling a name that has not been registered throws an error naming it,
+which appears in the browser console. Values that used to be JavaScript expressions (for example data computed in the
+browser) should be computed in .NET.
 
 [View full example](https://github.com/panoramicdata/PanoramicData.ECharts/blob/main/PanoramicData.ECharts.Samples/Areas/Pie/HalfDoughnutChart.razor) and the
 [sample functions](https://github.com/panoramicdata/PanoramicData.ECharts/blob/main/PanoramicData.ECharts.Samples/wwwroot/js/panoramicdata-echarts-samples.js)
-
-[View full example](https://github.com/panoramicdata/PanoramicData.ECharts/blob/main/PanoramicData.ECharts.Samples/Areas/Pie/HalfDoughnutChart.razor)
 
 ### 5. Real-Time Updates
 
@@ -281,7 +281,7 @@ private async Task UpdateChartAsync()
 
 Version 7.0 no longer evaluates JavaScript sent from .NET, so functions are registered in the browser by name:
 
-1. Move each function body into a static script loaded after the PanoramicData.ECharts scripts:
+1. Move each function body into a static script loaded after the PanoramicData.ECharts scripts and before `blazor.*.js`:
    `panoramicDataECharts.registerFunction("myFormatter", function (p) { ... });`
 2. Replace `new JavascriptFunction("function (p) { ... }")` with `JavascriptFunction.Registered("myFormatter")`,
    including `ExternalDataSource.AfterLoad`.
@@ -289,6 +289,7 @@ Version 7.0 no longer evaluates JavaScript sent from .NET, so functions are regi
 4. Make any custom `JsonConverters` write valid JSON instead of raw JavaScript.
 
 See the [changelog](CHANGELOG.md) for every breaking change.
+
 ### Upgrading from v5.x to v6.0
 
 #### Breaking Changes

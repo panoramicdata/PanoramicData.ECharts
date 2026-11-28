@@ -52,7 +52,8 @@ var yo={},mo={};var xo,_o=function(){function t(t,e,n){var i=this;this._sleepAft
 window.panoramicDataECharts = {
   charts: new Map(),
   dataSources: new Map(),
-  functions: new Map(),
+  // Kept if this script is loaded again, so registrations made earlier survive.
+  functions: (window.panoramicDataECharts && window.panoramicDataECharts.functions) || new Map(),
   logging: false,
   changeLogging: function (b) {
     panoramicDataECharts.logging = b;
@@ -89,24 +90,41 @@ window.panoramicDataECharts = {
     return fn;
   },
   resolveDataSourceRef: function (fetchId, path) {
+    if (!panoramicDataECharts.dataSources.has(fetchId)) {
+      console.error(`PanoramicData.ECharts: no external data source has been loaded with id '${fetchId}'.`);
+      return undefined;
+    }
     const data = panoramicDataECharts.getDataSource(fetchId);
     return path == null ? data : panoramicDataECharts.evaluatePath(data, path);
+  },
+  // Resolved when ECharts calls it, so a function registered after the chart rendered still works.
+  functionReference: function (name) {
+    return function (...args) {
+      return panoramicDataECharts.getFunction(name).apply(this, args);
+    };
+  },
+  isMarker: function (value, markerKey, allowedKeys) {
+    if (!Object.prototype.hasOwnProperty.call(value, markerKey)) return false;
+    return Object.keys(value).every((k) => allowedKeys.includes(k));
   },
   // JSON.parse reviver: {"$pdFn": name} becomes the registered function, {"$pdDs": id, "path": p} the fetched data.
   reviveMarker: function (key, value) {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
       return value;
     }
-    if (Object.prototype.hasOwnProperty.call(value, "$pdFn")) {
-      return panoramicDataECharts.getFunction(value.$pdFn);
+    if (panoramicDataECharts.isMarker(value, "$pdFn", ["$pdFn"])) {
+      return panoramicDataECharts.functionReference(value.$pdFn);
     }
-    if (Object.prototype.hasOwnProperty.call(value, "$pdDs")) {
+    if (panoramicDataECharts.isMarker(value, "$pdDs", ["$pdDs", "path"])) {
       return panoramicDataECharts.resolveDataSourceRef(value.$pdDs, value.path);
     }
     return value;
   },
   parseOptions: function (text) {
-    return JSON.parse(text, panoramicDataECharts.reviveMarker);
+    // The reviver is only needed when a marker can be present; it is several times slower on large data.
+    return text.indexOf('"$pd') === -1
+      ? JSON.parse(text)
+      : JSON.parse(text, panoramicDataECharts.reviveMarker);
   },
   evaluatePath: function (data, pathExpression) {
     // Accept a leading '.' and [n] indexes, as paths written for the old raw JavaScript did.
