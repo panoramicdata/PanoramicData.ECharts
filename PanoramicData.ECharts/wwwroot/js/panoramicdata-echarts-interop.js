@@ -1,3 +1,4 @@
+/* global panoramicDataECharts, echarts */
 /**
  * PanoramicData.ECharts - Blazor wrapper for Apache ECharts
  * JavaScript interop layer
@@ -6,7 +7,9 @@ window.panoramicDataECharts = {
   charts: new Map(),
   dataSources: new Map(),
   // Kept if this script is loaded again, so registrations made earlier survive.
-  functions: (window.panoramicDataECharts && window.panoramicDataECharts.functions) || new Map(),
+  functions:
+    (window.panoramicDataECharts && window.panoramicDataECharts.functions) ||
+    new Map(),
   logging: false,
   changeLogging: function (b) {
     panoramicDataECharts.logging = b;
@@ -44,7 +47,9 @@ window.panoramicDataECharts = {
   },
   resolveDataSourceRef: function (fetchId, path) {
     if (!panoramicDataECharts.dataSources.has(fetchId)) {
-      console.error(`PanoramicData.ECharts: no external data source has been loaded with id '${fetchId}'.`);
+      console.error(
+        `PanoramicData.ECharts: no external data source has been loaded with id '${fetchId}'.`,
+      );
       return undefined;
     }
     const data = panoramicDataECharts.getDataSource(fetchId);
@@ -81,7 +86,9 @@ window.panoramicDataECharts = {
   },
   evaluatePath: function (data, pathExpression) {
     // Accept a leading '.' and [n] indexes, as paths written for the old raw JavaScript did.
-    const normalized = pathExpression.replace(/\[(\d+)\]/g, ".$1").replace(/^\.+/, "");
+    const normalized = pathExpression
+      .replace(/\[(\d+)\]/g, ".$1")
+      .replace(/^\.+/, "");
     if (normalized === "") return data;
     const pathSegments = normalized.split(".");
     const blockedKeys = ["__proto__", "constructor", "prototype"];
