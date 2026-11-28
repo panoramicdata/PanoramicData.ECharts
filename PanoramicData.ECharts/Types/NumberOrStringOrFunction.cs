@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -61,7 +61,7 @@ public class NumberOrStringOrFunction
 	}
 }
 
-/// <summary>JSON converter for <see cref="NumberOrStringOrFunction"/> that serializes to a number, string, or raw JavaScript.</summary>
+/// <summary>JSON converter for <see cref="NumberOrStringOrFunction"/> that serializes to a number, string, or a registered-function marker.</summary>
 public class NumberOrStringOrFunctionConverter : JsonConverter<NumberOrStringOrFunction>
 {
 	/// <inheritdoc/>

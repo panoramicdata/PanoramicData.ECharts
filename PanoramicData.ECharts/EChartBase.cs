@@ -304,7 +304,10 @@ public abstract class EChartBase : ComponentBase, IAsyncDisposable
 
 			await JSRuntime.InvokeVoidAsync("panoramicDataECharts.disposeChart", Id);
 		}
-		catch { }
+		catch
+		{
+			// Best-effort cleanup: the JS runtime or circuit may already be gone during disposal, and DisposeAsync must not throw.
+		}
 	}
 
 	/// <summary>
@@ -327,7 +330,10 @@ public abstract class EChartBase : ComponentBase, IAsyncDisposable
 		{
 			await JSRuntime.InvokeVoidAsync("panoramicDataECharts.clearChart", Id);
 		}
-		catch { }
+		catch
+		{
+			// Best-effort: clearing a chart whose JS runtime or circuit has gone is not an error for the caller.
+		}
 	}
 
 	/// <summary>

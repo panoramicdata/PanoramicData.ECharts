@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts.Internal;
 
@@ -10,7 +10,7 @@ internal class FetchCommand
 		FetchId = ext.FetchId;
 		FetchAs = ext.FetchAs;
 		Path = ext.Path;
-		AfterLoad = ext.AfterLoad?.Function; // serialize as string
+		AfterLoad = ext.AfterLoad?.Name;
 		Options = ext.Options;
 	}
 
