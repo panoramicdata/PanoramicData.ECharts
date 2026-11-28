@@ -110,7 +110,7 @@ window.panoramicDataECharts = {
 
     chart.__dataSources = [];
 
-    for (item of JSON.parse(fetchOptions)) {
+    for (const item of JSON.parse(fetchOptions)) {
       if (panoramicDataECharts.logging) {
         console.log(`FETCH ${item.id}`);
         console.log(item);
@@ -118,7 +118,7 @@ window.panoramicDataECharts = {
 
       const response = await fetch(item.url, item.options);
       if (!response.ok) {
-        throw new Error("Failed to fetch external chart data: url=" + url);
+        throw new Error("Failed to fetch external chart data: url=" + item.url);
       }
 
       // parse the response as JSON
@@ -168,7 +168,7 @@ window.panoramicDataECharts = {
     if (mapOptions == null) return;
 
     var parsedOptions = panoramicDataECharts.parseOptions(mapOptions);
-    for (item of parsedOptions) {
+    for (const item of parsedOptions) {
       if (panoramicDataECharts.logging) {
         console.log("MAP");
         console.log(item);

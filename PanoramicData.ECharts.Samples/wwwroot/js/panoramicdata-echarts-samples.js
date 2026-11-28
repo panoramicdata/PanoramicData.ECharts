@@ -3,43 +3,7 @@
  * Functions the PanoramicData.ECharts samples reference with JavascriptFunction.Registered(name).
  * Load after the PanoramicData.ECharts scripts and before any chart renders.
  */
-(function (charts) {
-  const hours = [
-    "12a",
-    "1a",
-    "2a",
-    "3a",
-    "4a",
-    "5a",
-    "6a",
-    "7a",
-    "8a",
-    "9a",
-    "10a",
-    "11a",
-    "12p",
-    "1p",
-    "2p",
-    "3p",
-    "4p",
-    "5p",
-    "6p",
-    "7p",
-    "8p",
-    "9p",
-    "10p",
-    "11p",
-  ];
-  const days = [
-    "Saturday",
-    "Friday",
-    "Thursday",
-    "Wednesday",
-    "Tuesday",
-    "Monday",
-    "Sunday",
-  ];
-
+function registerGraphSamples(charts) {
   charts.registerFunction(
     "samples.graph.forceLayout.afterLoad",
     function (graph) {
@@ -49,12 +13,16 @@
       return graph;
     },
   );
+}
 
+function registerHeatmapSamples(charts) {
   charts.registerFunction("samples.heatmap.multiYear.tooltip", function (p) {
     const format = echarts.time.format(p.data[0], "{yyyy}-{MM}-{dd}", false);
     return format + ": " + p.data[1];
   });
+}
 
+function registerMultiAxisSamples(charts) {
   charts.registerFunction("samples.multiAxis.ml", function (value) {
     return value + " ml";
   });
@@ -62,10 +30,21 @@
   charts.registerFunction("samples.multiAxis.celsius", function (value) {
     return value + " °C";
   });
+}
 
+function registerPieSamples(charts) {
   charts.registerFunction("samples.pie.halfDoughnut.label", function (param) {
     return param.name + " (" + param.percent * 2 + "%)";
   });
+}
+
+function registerScatterSamples(charts) {
+  const hours = Array.from({ length: 24 }, function (_, h) {
+    return (h % 12 || 12) + (h < 12 ? "a" : "p");
+  });
+  const days = "Saturday Friday Thursday Wednesday Tuesday Monday Sunday".split(
+    " ",
+  );
 
   charts.registerFunction(
     "samples.scatter.punchCard.tooltip",
@@ -93,4 +72,14 @@
       return idx * 5;
     },
   );
-})(window.panoramicDataECharts);
+}
+
+function registerAllSamples(charts) {
+  registerGraphSamples(charts);
+  registerHeatmapSamples(charts);
+  registerMultiAxisSamples(charts);
+  registerPieSamples(charts);
+  registerScatterSamples(charts);
+}
+
+registerAllSamples(window.panoramicDataECharts);
