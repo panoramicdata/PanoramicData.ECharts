@@ -4,16 +4,10 @@
     <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <PackageId>PanoramicData.ECharts.Demo</PackageId>
     <RepositoryUrl>https://github.com/panoramicdata/PanoramicData.ECharts</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/panoramicdata/PanoramicData.ECharts</PackageProjectUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <NeutralResourcesLanguage>en</NeutralResourcesLanguage>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>Logo.png</PackageIcon>
+    <!-- A demo web app, not a consumable library: it must never be packed or published. -->
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PanoramicData.ECharts.Samples\PanoramicData.ECharts.Samples.csproj" />
@@ -21,8 +15,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\css\site.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Logo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
