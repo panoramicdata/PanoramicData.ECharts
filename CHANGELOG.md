@@ -12,8 +12,67 @@ released, since nothing in the pipeline generates one.
 
 ## [Unreleased]
 
+Version 7.0. This release removes `eval` from the package's JavaScript, which changes how JavaScript
+functions and external data references are passed from .NET. The major version moves to 7.0 for these
+breaking changes, so it no longer matches the bundled Apache ECharts version (still 6.1.0).
+
+### Breaking changes
+
+- **JavaScript functions are registered in the browser by name. No JavaScript source is sent from .NET
+  or evaluated.** The chart options, map definitions and fetch commands are now strict JSON, parsed with
+  `JSON.parse`. `eval` is gone from `panoramicdata-echarts.js`, `panoramicdata-echarts-min.js`,
+  `panoramicdata-echarts-interop.js` and the PanoramicData part of both bundles, so this package no longer
+  needs `'unsafe-eval'` in a Content Security Policy. (The Apache ECharts library inside the bundles still
+  contains one `new Function` fallback, which it uses only when `JSON.parse` does not exist.)
+- **`JavascriptFunction`:** the public constructor `JavascriptFunction(string function)`, the explicit
+  conversion from `string` and the `Function` property are removed, because running source text needs
+  `eval`. Use `JavascriptFunction.Registered("name")` and the `Name` property. Every option property typed
+  `JavascriptFunction`, `ColorOrFunction`, `NumberOrFunction`, `NumberArrayOrFunction`,
+  `NumberOrStringOrFunction`, `ObjectOrFunction`, `StringOrFunction` or `TooltipPosition` keeps its type.
+- **`JavascriptFunctionConverter`** writes the marker object `{"$pdFn":"<name>"}` instead of the raw
+  function source.
+- **`ExternalDataSourceRefConverter`** writes `{"$pdDs":"<fetchId>","path":"<path>"}` instead of the
+  JavaScript expression `window.panoramicDataECharts.getDataSource('<fetchId>').<path>`.
+  `ExternalDataSourceRef.Path` (and `ExternalDataSource.Path`) is now a data path, not JavaScript:
+  dot-separated own properties, with `[n]` array indexes and a leading `.` accepted. Method calls or other
+  expressions in a path no longer work, and `__proto__`, `constructor` and `prototype` are never followed.
+- **`ExternalDataSource.AfterLoad`** is sent as the registered function's name.
+- **`ColorConverter`** writes gradients as ECharts gradient objects (`{"type":"linear","x":0,...}`) instead
+  of `new echarts.graphic.LinearGradient(...)`. Charts render the same, and gradient coordinates no longer
+  depend on the server's culture (a decimal comma used to produce invalid JavaScript).
+- **Custom converters** passed in `JsonConverters` must write valid JSON. A converter that used
+  `WriteRawValue` to emit JavaScript will now fail to parse in the browser. The property names `$pdFn` and
+  `$pdDs` are reserved for the markers above.
+- **Values that were JavaScript expressions,** such as `Data = new JavascriptFunction("(function () { ... })()")`,
+  must be computed in .NET instead.
+- A chart that references a name nobody registered does not render, and the browser console says which
+  name is missing.
+
+### Added
+
+- `panoramicDataECharts.registerFunction(name, fn)` in the browser, and `JavascriptFunction.Registered(name)`
+  in .NET to reference it.
+- The samples register their functions in `PanoramicData.ECharts.Samples/wwwroot/js/panoramicdata-echarts-samples.js`,
+  which the demo loads.
+
+### Migration from 6.x
+
+1. Move each function body out of C# into a static script loaded after the PanoramicData.ECharts scripts:
+   `panoramicDataECharts.registerFunction("myFormatter", function (p) { ... });`
+2. Replace `new JavascriptFunction("function (p) { ... }")` (or `(JavascriptFunction)"..."`) with
+   `JavascriptFunction.Registered("myFormatter")`. Do the same for `ExternalDataSource.AfterLoad`.
+3. If you serialised options yourself and relied on `JavascriptFunctionConverter` or
+   `ExternalDataSourceRefConverter` producing JavaScript, expect the marker objects above instead.
+4. If you wrote your own converter that emits JavaScript with `WriteRawValue`, make it emit JSON. To pass a
+   function, serialise a `JavascriptFunction`: `JsonSerializer.Serialize(writer, JavascriptFunction.Registered("name"), options)`.
+5. Check any `ExternalDataSourceRef` or `ExternalDataSource` path that was more than property names and `[n]` indexes.
+6. If your Content Security Policy allowed `'unsafe-eval'` only for this package, you can remove it.
+
 ### Fixed
 
+- **External data paths only follow the data's own properties.** The path walk used the target object's
+  own `hasOwnProperty` and could be pointed at prototype keys; it now uses
+  `Object.prototype.hasOwnProperty.call` and refuses `__proto__`, `constructor` and `prototype`.
 - **Options changed in place during chart initialisation are drawn again.** 6.1.35 stopped a re-render
   during initialisation from starting a second `initChart`, but only redrew afterwards when `Options`
   was a different instance. Pages that change the same instance in place while the chart initialises

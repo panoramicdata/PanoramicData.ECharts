@@ -187,8 +187,8 @@ options.Series = new()
 ```
 
 **Advanced features:**
-- Path expressions: `new ExternalDataSource("url", path: "data.items")`
-- Post-load transformations: `AfterLoad = new JavascriptFunction("...")`
+- Paths: `new ExternalDataSource("url", path: "data.items")` (dot-separated own properties, `[n]` for array items; not evaluated as JavaScript)
+- Post-load transformations: `AfterLoad = JavascriptFunction.Registered("name")` (see [JavaScript Functions](#4-javascript-functions))
 - Custom fetch options: headers, credentials, policies
 
 [View full example](https://github.com/panoramicdata/PanoramicData.ECharts/blob/main/PanoramicData.ECharts.Samples/Areas/Sunburst/SimpleSunburstChart.razor)
@@ -213,15 +213,32 @@ options.Dataset = new Dataset
 
 ### 4. JavaScript Functions
 
-Use custom JavaScript for formatters and callbacks:
+Formatters and other callbacks are JavaScript functions you register in the browser by name, then reference from C#.
+No JavaScript source is sent from .NET or evaluated, so the package needs no `'unsafe-eval'` in your Content Security Policy.
+
+Register the functions in a static script loaded after the PanoramicData.ECharts scripts:
+
+```html
+<script src="_content/PanoramicData.ECharts/js/panoramicdata-echarts-bundle-min.js"></script>
+<script src="js/chart-functions.js"></script>
+```
+
+```javascript
+// wwwroot/js/chart-functions.js
+panoramicDataECharts.registerFunction("halfDoughnutLabel", function (param) {
+  return param.name + " (" + param.percent * 2 + "%)";
+});
+```
 
 ```csharp
-Formatter = new JavascriptFunction(@"
-    function (param) { 
-        return param.name + ' (' + param.percent * 2 + '%)'; 
-    }
-")
+Formatter = JavascriptFunction.Registered("halfDoughnutLabel")
 ```
+
+A name that has not been registered stops the chart from rendering and logs the missing name to the browser console.
+Values that used to be JavaScript expressions (for example data computed in the browser) should be computed in .NET.
+
+[View full example](https://github.com/panoramicdata/PanoramicData.ECharts/blob/main/PanoramicData.ECharts.Samples/Areas/Pie/HalfDoughnutChart.razor) and the
+[sample functions](https://github.com/panoramicdata/PanoramicData.ECharts/blob/main/PanoramicData.ECharts.Samples/wwwroot/js/panoramicdata-echarts-samples.js)
 
 [View full example](https://github.com/panoramicdata/PanoramicData.ECharts/blob/main/PanoramicData.ECharts.Samples/Areas/Pie/HalfDoughnutChart.razor)
 
@@ -260,6 +277,18 @@ private async Task UpdateChartAsync()
 
 ## Migration Guide
 
+### Upgrading from v6.x to v7.0
+
+Version 7.0 no longer evaluates JavaScript sent from .NET, so functions are registered in the browser by name:
+
+1. Move each function body into a static script loaded after the PanoramicData.ECharts scripts:
+   `panoramicDataECharts.registerFunction("myFormatter", function (p) { ... });`
+2. Replace `new JavascriptFunction("function (p) { ... }")` with `JavascriptFunction.Registered("myFormatter")`,
+   including `ExternalDataSource.AfterLoad`.
+3. Compute in .NET any value that was a JavaScript expression rather than a function.
+4. Make any custom `JsonConverters` write valid JSON instead of raw JavaScript.
+
+See the [changelog](CHANGELOG.md) for every breaking change.
 ### Upgrading from v5.x to v6.0
 
 #### Breaking Changes

@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
@@ -24,7 +24,7 @@ public class ExternalDataSource
 	/// <param name="fetchAs">How to interpret the fetched data.</param>
 	/// <param name="path">Optional path to a property within the returned JSON.</param>
 	/// <param name="options">Optional fetch options (headers, method, etc.).</param>
-	/// <param name="afterLoad">Optional JavaScript function to transform data after loading.</param>
+	/// <param name="afterLoad">Optional registered JavaScript function (see <see cref="JavascriptFunction.Registered"/>) to transform data after loading.</param>
 	/// <param name="fetchId">Optional unique identifier; auto-generated if not provided.</param>
 	public ExternalDataSource(string url, ExternalDataFetchAs fetchAs = ExternalDataFetchAs.Json, string? path = null, FetchOptions? options = null, JavascriptFunction? afterLoad = null, string? fetchId = null)
 	{
@@ -60,7 +60,7 @@ public class ExternalDataSource
 
 	/// <summary>
 	/// A function executed after the data is loaded, allowing the data to be manipulated.
-	/// Function signature: function (data)
+	/// Function signature: function (data). Register it in the browser and reference it with <see cref="JavascriptFunction.Registered"/>.
 	/// The function must return the manipulated data object.
 	/// 
 	/// The function is evaluated AFTER the Path expression.

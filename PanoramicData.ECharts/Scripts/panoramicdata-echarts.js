@@ -5,6 +5,7 @@
 window.panoramicDataECharts = {
   charts: new Map(),
   dataSources: new Map(),
+  functions: new Map(),
   logging: false,
   changeLogging: function (b) {
     panoramicDataECharts.logging = b;
@@ -22,8 +23,49 @@ window.panoramicDataECharts = {
 
     return data;
   },
+  registerFunction: function (name, fn) {
+    if (typeof name !== "string" || name.length === 0) {
+      throw new TypeError("registerFunction: name must be a non-empty string");
+    }
+    if (typeof fn !== "function") {
+      throw new TypeError(`registerFunction: '${name}' is not a function`);
+    }
+    panoramicDataECharts.functions.set(name, fn);
+  },
+  getFunction: function (name) {
+    const fn = panoramicDataECharts.functions.get(name);
+    if (fn === undefined) {
+      const message = `PanoramicData.ECharts: no function is registered as '${name}'. Call panoramicDataECharts.registerFunction('${name}', fn) before the chart renders.`;
+      console.error(message);
+      throw new Error(message);
+    }
+    return fn;
+  },
+  resolveDataSourceRef: function (fetchId, path) {
+    const data = panoramicDataECharts.getDataSource(fetchId);
+    return path == null ? data : panoramicDataECharts.evaluatePath(data, path);
+  },
+  // JSON.parse reviver: {"$pdFn": name} becomes the registered function, {"$pdDs": id, "path": p} the fetched data.
+  reviveMarker: function (key, value) {
+    if (value === null || typeof value !== "object" || Array.isArray(value)) {
+      return value;
+    }
+    if (Object.prototype.hasOwnProperty.call(value, "$pdFn")) {
+      return panoramicDataECharts.getFunction(value.$pdFn);
+    }
+    if (Object.prototype.hasOwnProperty.call(value, "$pdDs")) {
+      return panoramicDataECharts.resolveDataSourceRef(value.$pdDs, value.path);
+    }
+    return value;
+  },
+  parseOptions: function (text) {
+    return JSON.parse(text, panoramicDataECharts.reviveMarker);
+  },
   evaluatePath: function (data, pathExpression) {
-    const pathSegments = pathExpression.split(".");
+    // Accept a leading '.' and [n] indexes, as paths written for the old raw JavaScript did.
+    const normalized = pathExpression.replace(/\[(\d+)\]/g, ".$1").replace(/^\.+/, "");
+    if (normalized === "") return data;
+    const pathSegments = normalized.split(".");
     const blockedKeys = ["__proto__", "constructor", "prototype"];
 
     // Own properties only, never prototype keys; returns undefined when not found.
@@ -81,8 +123,7 @@ window.panoramicDataECharts = {
       // execute the afterLoad function if required
       if (item.afterLoad != null) {
         try {
-          const func = eval(`(${item.afterLoad})`);
-          data = func(data);
+          data = panoramicDataECharts.getFunction(item.afterLoad)(data);
         } catch (error) {
           console.log(
             "Failed to execute afterLoad function of external data source",
@@ -101,7 +142,7 @@ window.panoramicDataECharts = {
   registerMaps: function (chart, mapOptions) {
     if (mapOptions == null) return;
 
-    var parsedOptions = eval("(" + mapOptions + ")");
+    var parsedOptions = panoramicDataECharts.parseOptions(mapOptions);
     for (item of parsedOptions) {
       if (panoramicDataECharts.logging) {
         console.log("MAP");
@@ -145,7 +186,7 @@ window.panoramicDataECharts = {
     await panoramicDataECharts.registerMaps(chart, mapOptions);
 
     // parse the options
-    var parsedOptions = eval("(" + chartOptions + ")");
+    var parsedOptions = panoramicDataECharts.parseOptions(chartOptions);
 
     if (panoramicDataECharts.logging) {
       console.log("CHART");
@@ -172,7 +213,7 @@ window.panoramicDataECharts = {
     await panoramicDataECharts.registerMaps(chart, mapOptions);
 
     // parse the options
-    var parsedOptions = eval("(" + chartOptions + ")");
+    var parsedOptions = panoramicDataECharts.parseOptions(chartOptions);
 
     // iterate through the options and map all JS functions / external data sources
     // set the chart options

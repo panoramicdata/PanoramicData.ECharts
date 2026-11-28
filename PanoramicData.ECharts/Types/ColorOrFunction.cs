@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
@@ -48,7 +48,7 @@ public class ColorOrFunction
 	}
 }
 
-/// <summary>JSON converter for <see cref="ColorOrFunction"/> that serializes to a color value or raw JavaScript function.</summary>
+/// <summary>JSON converter for <see cref="ColorOrFunction"/> that serializes to a color value or a registered-function marker.</summary>
 public class ColorOrFunctionConverter : JsonConverter<ColorOrFunction>
 {
 	/// <inheritdoc/>

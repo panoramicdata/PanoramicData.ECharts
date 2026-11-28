@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
@@ -27,7 +27,7 @@ namespace PanoramicData.ECharts;
 /// NumberArrayOrFunction padding = new double[] { 10, 20, 30, 40 };
 /// 
 /// // JavaScript function
-/// NumberArrayOrFunction padding = new JavascriptFunction("function(params) { return params.value * 2; }");
+/// NumberArrayOrFunction padding = JavascriptFunction.Registered("doubleValue");
 /// </code>
 /// </example>
 [JsonConverter(typeof(NumberArrayOrFunctionConverter))]
@@ -123,7 +123,7 @@ public class NumberArrayOrFunction
 	/// <returns>A new <see cref="NumberArrayOrFunction"/> instance containing the function.</returns>
 	/// <example>
 	/// <code>
-	/// NumberArrayOrFunction value = new JavascriptFunction("function() { return 100; }");
+	/// NumberArrayOrFunction value = JavascriptFunction.Registered("fixedSize");
 	/// </code>
 	/// </example>
 	public static implicit operator NumberArrayOrFunction(JavascriptFunction function)
@@ -185,7 +185,7 @@ public class NumberArrayOrFunctionConverter : JsonConverter<NumberArrayOrFunctio
 	/// </item>
 	/// <item>
 	/// <term>JavaScript function</term>
-	/// <description>Written as a raw JavaScript function using <see cref="JavascriptFunctionConverter"/></description>
+	/// <description>Written as a registered-function marker using <see cref="JavascriptFunctionConverter"/></description>
 	/// </item>
 	/// </list>
 	/// </remarks>

@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
@@ -42,7 +42,7 @@ public class NumberOrFunction
 	}
 }
 
-/// <summary>JSON converter for <see cref="NumberOrFunction"/> that serializes to a JSON number or raw JavaScript.</summary>
+/// <summary>JSON converter for <see cref="NumberOrFunction"/> that serializes to a JSON number or a registered-function marker.</summary>
 public class NumberOrFunctionConverter : JsonConverter<NumberOrFunction>
 {
 	/// <inheritdoc/>

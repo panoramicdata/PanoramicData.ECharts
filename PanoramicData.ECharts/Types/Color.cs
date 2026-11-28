@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace PanoramicData.ECharts;
@@ -191,7 +191,7 @@ public class Color
 /// </para>
 /// <list type="bullet">
 /// <item><description>String colors are written as JSON strings</description></item>
-/// <item><description>Gradients are written as JavaScript constructor calls for ECharts</description></item>
+/// <item><description>Gradients are written as ECharts gradient objects (plain JSON)</description></item>
 /// </list>
 /// </remarks>
 public class ColorConverter : JsonConverter<Color>
@@ -219,43 +219,48 @@ public class ColorConverter : JsonConverter<Color>
 	/// </para>
 	/// <list type="bullet">
 	/// <item><description>String colors: written as JSON strings (e.g., <c>"#ff0000"</c>)</description></item>
-	/// <item><description>Linear gradients: written as <c>new echarts.graphic.LinearGradient(...)</c></description></item>
-	/// <item><description>Radial gradients: written as <c>new echarts.graphic.RadialGradient(...)</c></description></item>
+	/// <item><description>Linear gradients: written as the ECharts gradient object <c>{"type":"linear","x":0,"y":0,"x2":0,"y2":1,"colorStops":[...]}</c></description></item>
+	/// <item><description>Radial gradients: written as <c>{"type":"radial","x":0.5,"y":0.5,"r":0.5,"colorStops":[...]}</c></description></item>
 	/// </list>
 	/// </remarks>
 	public override void Write(Utf8JsonWriter writer, Color value, JsonSerializerOptions options)
 	{
-		if (value.GraphicColor != null)
-		{
-			string colorStops = "null";
-			string global = "null";
-			if (value.GraphicColor is Gradient g)
-			{
-				colorStops = JsonSerializer.Serialize(g.ColorStops, options);
-				global = g.Global switch
-				{
-					true => "true",
-					false => "false",
-					_ => "null"
-				};
-			}
-
-			switch (value.GraphicColor)
-			{
-				case LinearGradient lg:
-					writer.WriteRawValue($"new echarts.graphic.LinearGradient({lg.X}, {lg.Y}, {lg.X2}, {lg.Y2}, {colorStops}, {global})", true);
-					break;
-				case RadialGradient rg:
-					writer.WriteRawValue($"new echarts.graphic.RadialGradient({rg.X}, {rg.Y}, {rg.R}, {colorStops}, {global})", true);
-					break;
-				default:
-					throw new NotSupportedException($"Serialization of type {value.GraphicColor.GetType()} not supported");
-			}
-		}
-		else
+		if (value.GraphicColor == null)
 		{
 			writer.WriteStringValue(value.Value);
+			return;
 		}
+
+		if (value.GraphicColor is not (LinearGradient or RadialGradient))
+		{
+			throw new NotSupportedException($"Serialization of type {value.GraphicColor.GetType()} not supported");
+		}
+
+		var gradient = (Gradient)value.GraphicColor;
+		writer.WriteStartObject();
+		writer.WriteString("type", gradient.Type);
+		if (gradient is LinearGradient lg)
+		{
+			writer.WriteNumber("x", lg.X);
+			writer.WriteNumber("y", lg.Y);
+			writer.WriteNumber("x2", lg.X2);
+			writer.WriteNumber("y2", lg.Y2);
+		}
+		else if (gradient is RadialGradient rg)
+		{
+			writer.WriteNumber("x", rg.X);
+			writer.WriteNumber("y", rg.Y);
+			writer.WriteNumber("r", rg.R);
+		}
+
+		writer.WritePropertyName("colorStops");
+		JsonSerializer.Serialize(writer, gradient.ColorStops, options);
+		if (gradient.Global.HasValue)
+		{
+			writer.WriteBoolean("global", gradient.Global.Value);
+		}
+
+		writer.WriteEndObject();
 	}
 
 	/// <summary>
